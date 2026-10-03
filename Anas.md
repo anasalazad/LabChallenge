@@ -1,5 +1,7 @@
 # Anas – start here 👋
 
+> **New to all this? Open `START_HERE_click_by_click_guide.pdf` (in this folder) and just follow it page by page** – it goes from installing Python to handing in Week 9, click by click. This file is the shorter version.
+
 All five labs (5–9) have been worked through. Every lab folder now has:
 
 - **`LabN_Worklog_WeekN.docx`** – your worklog for that week, built from the tutor's template (same Swinburne header/logo, same table). It starts with a **checklist** (☒ done / ☐ still to do), then the task table (*What I did · Time spent · Learning & Problems*), then the plots, then **yellow boxes where your screenshots go**.

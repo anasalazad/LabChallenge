@@ -10,6 +10,7 @@ Lab challenge: complete Labs 5–9 and document each week in the Lab Work Log te
 | [Lab 8](Lab%208) | RNN, LSTM/GRU, attention (+ one-page summary deliverable) | `Lab8_Worklog_Week8.docx` | `Lab8_RNN_LSTM_Attention.ipynb`, `Lab8_Summary.pdf` |
 | [Lab 9](Lab%209) | Reinforcement learning with Gymnasium (Q-learning) | `Lab9_Worklog_Week9.docx` | `Lab_Week 9.ipynb` (completed) |
 
+- **Beginner, step by step:** [`START_HERE_click_by_click_guide.pdf`](START_HERE_click_by_click_guide.pdf)
 - **What's left / how to finish:** [`Anas.md`](Anas.md) (and `Lab N/Anas.md` in each folder)
 - **Run everything locally:** `pip install -r requirements.txt` (Python 3.10–3.12)
 - **Worklog tools:** `_tools/` – build worklogs, insert screenshots, tick checklists (see `CLAUDE.md`)
