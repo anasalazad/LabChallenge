@@ -50,7 +50,7 @@ Execute a notebook headless: `jupyter nbconvert --to notebook --execute --inplac
 | Lab | Topic | Left for Claude | Left for Anas |
 |---|---|---|---|
 | 1 | Ollama + Gemini, latency, counting task on `student-mat.csv`, reasoning prompt, Gradio | done – Anas completed his own notebook (`Lab1_completed.ipynb`, API key removed); `week1.py` is now a static spec written from its outputs (no results JSON) | screenshots, paste corrected table into the notebook, replace the leaked Gemini key |
-| 2 | smolagents (search tool, memory, cloud vs local, GradioUI) | same | HF token, run `Lab2_smolagents_agent.ipynb`, screenshots |
+| 2 | smolagents (search tool, memory, cloud vs local, GradioUI) | done – Anas completed his own notebook (`Lab2_completed.ipynb`, HF token removed); `week2.py` is a static spec from its outputs (local model looped on code-parsing errors, step 6 hit 402 credits, GradioUI model-name typo) | screenshots, paste answers into the notebook, revoke the leaked HF token |
 | 3 | RAG: Make.com + `simple-rag/` + Pinecone | same | Pinecone + Make.com in the browser, run the scripts, screenshots |
 | 4 | AutoGen 2-agent app (fixed) + group chat extension | same | Python 3.12 `.venv-autogen`, run app + `run_examples.py` + `groupchat_demo.py`, screenshots |
 | 5 | Python, Colab, sklearn, Linear Regression | run part D of `linear_regression_extras.ipynb` (California Housing download was blocked in the cloud) + put the numbers/figure in the worklog | Colab walkthrough + screenshots, local sklearn install |

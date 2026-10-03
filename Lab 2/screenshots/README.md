@@ -6,17 +6,15 @@ Save each one with the name below (only the number at the start has to be exact;
 python _tools/insert_screenshots.py 2
 ```
 
-**Never let an API key / token show in a screenshot.**
+**Never let a token show in a screenshot** – take the notebook shots from `Lab2_completed.ipynb` (the copy without the HF token).
 
 | File name | What to capture |
 |---|---|
-| `2.1_hf_token.png` | **Hugging Face – my access token** – huggingface.co → Settings → Access Tokens with your token in the list (the value is hidden – good). Don't screenshot the pop-up that shows the full token. |
-| `2.2_pip_install.png` | **Terminal – installing smolagents** – the end of `pip install "smolagents[toolkit]" "smolagents[transformers]"` ('Successfully installed …'). |
-| `2.3_no_tools.png` | **Notebook – cloud agent, no tools** – the step 2 output: the 'New run' box, Step 1 / Step 2 with the code, 'Final answer: 1275' and the small step table. |
-| `2.4_web_search.png` | **Notebook – web search, two steps** – the step 3 log: Step 1 with `web_search(...)` + its Execution logs, and Step 2 with the 15% maths + 'Final answer'. Two shots are fine: `2.4a_…` + `2.4b_…`. |
-| `2.5_memory.png` | **Notebook – agent.memory.steps** – the step 4 output (TaskStep / ActionStep lines + the 'what smolagents records' line) and the follow-up's last line ('searched again: False …'). |
-| `2.6_local_model.png` | **Notebook – local model (TransformersModel)** – the step 5 output: 'loaded Qwen/… in … s', the steps and the final answer (or the error if it failed). |
-| `2.7_cloud_vs_local.png` | **Notebook – cloud vs local** – the step 6 'Cloud: …s' / 'Local: …s' lines and the comparison table under them. |
-| `2.8_gradio_ui.png` | **GradioUI chat in the browser** – http://127.0.0.1:7860 (or the link the notebook printed) after asking the agent something that needs a search – the steps and the final answer should be visible. |
-
-Step-by-step: `START_HERE_Labs1-4_click_by_click.pdf` in the top folder.
+| `2.1_hf_token.png` | **Hugging Face – my access token** – huggingface.co → Settings → Access Tokens with your (new) token in the list – the value is hidden. Not the pop-up that shows the full token. |
+| `2.2_no_tools.png` | **Notebook – cloud agent, no tools** – the sum of 1 to 50 run: the 'New run' box, Step 1 (the formula code + 1275.0), Step 2 (final_answer) and the 1275.0 printed at the end. |
+| `2.3_web_search.png` | **Notebook – web search, 3 cycles** – the Melbourne run: Step 1 with `web_search(...)` + the start of its search results, then Steps 2 and 3 with 795000. Two shots are fine: `2.3a_…` + `2.3b_…`. |
+| `2.4_memory.png` | **Notebook – agent.memory.steps** – the memory cell: the `TaskStep(...)` line and the start of the `ActionStep(step_number=1, timing=…` lines. |
+| `2.5_local_model.png` | **Notebook – local model stuck** – the local run: Step 1 (105 s) and a couple of the 'Error in code parsing' steps with their durations. Two shots are fine: `2.5a_…` + `2.5b_…`. |
+| `2.6_cloud_vs_local_402.png` | **Notebook – cloud vs local, 402 error** – the `run_and_time` cell and its '402 Payment Required … depleted your monthly included credits' error. |
+| `2.7_gradio_ui.png` | **GradioUI chat** – the GradioUI page at http://127.0.0.1:7860 with your message (and the reply or the error). |
+| `2.8_checkpoint.png` | **Notebook – checkpoint answers** – the 'Checkpoint questions' cell at the end of the notebook. |

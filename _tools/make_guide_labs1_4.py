@@ -293,46 +293,40 @@ story.append(step("Click your profile picture (top right) → <b>Settings</b> �
                   "<b>+ Create new token</b> → choose <b>Read</b> → name it (e.g. <i>COS30018</i>) → "
                   "<b>Create token</b> → <b>Copy</b> (it's only shown once!)."))
 story.append(step("In <b>.env</b> replace <i>hf_your_token</i> with it → save."))
+story += warn("Your old token was typed into your Lab 2 notebook, so treat it as leaked: on the Access Tokens page "
+              "click the ⋮ menu next to it → <b>Delete</b>, then make a new one and use only the new one.", "OLD TOKEN")
 story += shot("2.1", "2.1_hf_token.png", "The Access Tokens page with your token in the list (value hidden). Not the "
                                          "pop-up that shows the full token.")
 
-story.append(P("2B  Install smolagents", "h2"))
+story.append(P("2B  Your completed notebook", "h2"))
+story.append(P("You've already done the Lab 2 notebook yourself. <b>Lab 2 › Lab2_completed.ipynb</b> is your notebook "
+               "with only one change: the HF token is taken out (it had been typed into three cells). Your Week 2 "
+               "worklog is already filled in from its outputs – including the local model getting stuck and the "
+               "'402 – credits used up' error, which are real results."))
 reset_steps()
-story.append(step("In <b>Tab 2</b> ((.venv) on):", cmd('pip install "smolagents[toolkit]" "smolagents[transformers]"'),
-                  P("This one is big (it brings PyTorch + transformers if you don't have them) – a few minutes.",
-                    "small")))
-story += shot("2.2", "2.2_pip_install.png", "The end of the install (<b>Successfully installed …</b>).")
-story += tip("If Jupyter was already running, restart it after installing: in Tab 1 press " + key("Ctrl") + " + "
-             + key("C") + ", then " + mono("jupyter notebook") + " again.")
-
-story.append(P("2C  Run the Lab 2 notebook", "h2"))
-reset_steps()
-story.append(step("In Jupyter open <b>Lab 2</b> → <b>Lab2_smolagents_agent.ipynb</b> → " +
-                  menu("Kernel", "Restart Kernel and Run All Cells…") + "."))
-story.append(step("Wait. The cloud parts take seconds; <b>Step 5 (local model) downloads ~3 GB the first time and then "
-                  "runs on your CPU</b> – it can take 10+ minutes. If it fails, that's OK (the sheet says it might) – "
-                  "the error is saved and goes into your worklog.",
-                  tip("Laptop with only 8 GB of memory, or no time? Change " + mono("RUN_LOCAL = True") + " to "
-                      + mono("RUN_LOCAL = False") + " in the first code cell and run all again – the worklog will say "
-                      "you skipped it.")))
-story.append(step("When the last cell prints <b>saved results/lab2_results.json</b>, take the screenshots:"))
-story += shot("2.3", "2.3_no_tools.png", "Step 2: the <b>New run</b> box, Step 1 / Step 2 with the code, "
-                                         "<b>Final answer: 1275</b>, and the small table.")
-story += shot("2.4", "2.4_web_search.png", "Step 3: Step 1 with <b>web_search(…)</b> + its Execution logs, and Step 2 "
-                                           "with the 15% maths + Final answer. Two pictures OK: 2.4a_…, 2.4b_….")
-story += shot("2.5", "2.5_memory.png", "Step 4 output (TaskStep / ActionStep lines + 'what smolagents records') and the "
-                                       "follow-up's last line (<i>searched again: False …</i>).")
-story += shot("2.6", "2.6_local_model.png", "Step 5: <b>loaded Qwen/… in … s</b>, the steps and the answer (or the "
-                                            "error).")
-story += shot("2.7", "2.7_cloud_vs_local.png", "Step 6: the <b>Cloud: …s</b> / <b>Local: …s</b> lines and the "
-                                               "comparison table.")
-story.append(step("Open the link printed under Step 7 (usually <b>http://127.0.0.1:7860</b>, or 7861 if the Week 1 chat "
-                  "is still running). Ask something that needs a search, e.g. <i>What's the population of "
-                  "Sydney? Then divide it by 4.</i>"))
-story += shot("2.8", "2.8_gradio_ui.png", "The GradioUI chat with the agent's steps and the final answer.")
-story += warn("Cloud model error like <b>402</b>, <b>credits</b> or <b>quota</b>? Hugging Face's free monthly credit "
-              "ran out – wait until next month or try again tomorrow; everything else still works.")
-story += finish_week(2, [11])
+story.append(step("In <b>Tab 1</b> (in LabChallenge, (.venv) on):", cmd("jupyter notebook")))
+story.append(step("Click <b>Lab 2</b> → <b>Lab2_completed.ipynb</b>. <b>Don't</b> use Run All – the outputs are your "
+                  "results (and your free HF credits are used up this month)."))
+story.append(step("In the last <b>Checkpoint questions</b> cell double-click, replace the answers with the ones from "
+                  "your worklog, then " + key("Shift") + " + " + key("Enter") + " and " + key("Cmd") + " + "
+                  + key("S") + "."))
+story.append(step("Take these screenshots from the notebook:"))
+story += shot("2.2", "2.2_no_tools.png", "The sum of 1 to 50 run: Step 1 (the formula code + 1275.0), Step 2 and "
+                                         "1275.0 at the end.")
+story += shot("2.3", "2.3_web_search.png", "The Melbourne run: Step 1 with <b>web_search(…)</b> + the start of the "
+                                           "results, then Steps 2 and 3 with 795000. Two pictures OK: 2.3a_…, 2.3b_….")
+story += shot("2.4", "2.4_memory.png", "The memory cell: the <b>TaskStep(…)</b> line and the start of the "
+                                       "<b>ActionStep(step_number=1, timing=…</b> lines.")
+story += shot("2.5", "2.5_local_model.png", "The local run: Step 1 (105 s) and a couple of the <b>Error in code "
+                                            "parsing</b> steps. Two pictures OK: 2.5a_…, 2.5b_….")
+story += shot("2.6", "2.6_cloud_vs_local_402.png", "The <b>run_and_time</b> cell and its <b>402 Payment Required</b> "
+                                                   "error.")
+story += shot("2.8", "2.8_checkpoint.png", "The Checkpoint questions cell with the new answers.")
+story.append(step("GradioUI: re-run the two cells at the bottom only after fixing the model name to "
+                  + mono("meta-llama/Llama-3.3-70B-Instruct") + " (needs credits – next month). Otherwise just "
+                  "screenshot the page with the error you got."))
+story += shot("2.7", "2.7_gradio_ui.png", "The GradioUI page at http://127.0.0.1:7860 with your message.")
+story += finish_week(2, [12])
 story.append(PageBreak())
 
 # ============================================================= WEEK 3
