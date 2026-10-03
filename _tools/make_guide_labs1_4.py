@@ -242,36 +242,39 @@ story.append(step("Click <b>Create API key</b> → give it a name (e.g. <i>COS30
                   "<b>Create key</b>. Click the copy icon next to the key."))
 story.append(step("In your <b>.env</b> file (TextEdit), replace <i>your_gemini_api_key</i> with the key → "
                   + key("Cmd") + " + " + key("S") + "."))
+story += warn("Your old key was typed into your Lab 1 notebook, so treat it as leaked: on the API keys page click "
+              "the bin/delete icon next to it, then make a new one (step 2) and use only the new one.", "OLD KEY")
 story += shot("1.3", "1.3_ai_studio_key.png", "The API keys page with your key in the list – it only shows the last "
                                                "few characters, that's fine. <b>Not</b> the pop-up that shows the full key.")
 
-story.append(P("1C  Run the Lab 1 notebook", "h2"))
+story.append(P("1C  Your completed notebook", "h2"))
+story.append(P("You've already done the Lab 1 notebook yourself. <b>Lab 1 › Lab1_completed.ipynb</b> is your notebook "
+               "with only one change: the API key is taken out (it had been typed into the code). Your Week 1 "
+               "worklog is already filled in from its outputs, so there's nothing to re-run."))
 reset_steps()
 story.append(step("In <b>Tab 1</b> (in LabChallenge, (.venv) on):", cmd("jupyter notebook"),
                   P("Your browser opens Jupyter. (If not, copy the <b>http://localhost:8888/…</b> line into the "
                     "browser.)", "small")))
-story.append(step("Click <b>Lab 1</b> → <b>Lab1_LLM_Access.ipynb</b>. Then " +
-                  menu("Kernel", "Restart Kernel and Run All Cells…") + " → <b>Restart</b>."))
-story.append(step("Wait 5–10 minutes. A cell that's still working shows <b>[*]</b>. Gemini's free tier sometimes says "
-                  "'rate limit' – the notebook waits and carries on by itself. The last cell prints "
-                  "<b>saved results/lab1_results.json</b>.",
-                  warn("<b>Failed to connect to Ollama</b> → open the Ollama app. <b>KeyError: 'GEMINI_API_KEY'</b> "
-                       "or 'No Gemini key' → check .env is saved in the LabChallenge folder, then run all again.")))
-story.append(step("Scroll back to the top and take these screenshots:"))
-story += shot("1.2", "1.2_ollama_notebook.png", "Step 3 (the <b>ollama.chat</b> cell + its answer + the "
-                                                 "<b>--- llama3.2:1b: … s</b> line) and Step 4's output (HTTP status 200, "
-                                                 "JSON keys, 'loaded in memory'). Two pictures OK: 1.2a_…, 1.2b_….")
-story += shot("1.4", "1.4_gemini_notebook.png", "Step 5's output: Gemini's answer, the <b>--- gemini… s | prompt … "
-                                                 "tokens</b> line and the <b>Same question: local … vs cloud …</b> line.")
-story += shot("1.5", "1.5_sentiment_results.png", "Step 7: the results table (avg seconds, correct, one-word answers, "
-                                                   "predictions) and the 'agreed on …' lines under it.")
-story += shot("1.6", "1.6_reasoning.png", "The bottom of Step 8: an answer or two + the little summary table.")
-story += shot("1.8", "1.8_comparison_table.png", "The <b>Deliverable – comparison table</b> and the checkpoint "
-                                                  "question 2 answer under it.")
-story.append(step("The chat window: open <b>http://127.0.0.1:7860</b> in a new browser tab. Ask something with "
-                  "<b>Local – Ollama</b> selected, then switch to <b>Cloud – Gemini</b> and ask again."))
-story += shot("1.7", "1.7_gradio_chat.png", "The chat page with one local and one cloud answer (the "
-                                            "<i>(model, x s)</i> line under each is visible).")
+story.append(step("Click <b>Lab 1</b> → <b>Lab1_completed.ipynb</b>. <b>Don't</b> use Run All – the outputs are your "
+                  "results. (If you do re-run it, the times change and the worklog needs the new numbers.)"))
+story.append(step("In the last cell (<b>Checkpoint Questions</b>) double-click, replace your table and answers with "
+                  "the corrected ones from your worklog (\"Deliverable – comparison table\" + \"Checkpoint "
+                  "questions\"), then press " + key("Shift") + " + " + key("Enter") + " and save with "
+                  + key("Cmd") + " + " + key("S") + "."))
+story.append(step("Take these screenshots from the notebook:"))
+story += shot("1.2", "1.2_ollama_notebook.png", "The <b>import ollama</b> + <b>ollama.chat(…)</b> cells and the start "
+                                                 "of the answer to 'What is an intelligent system?'.")
+story += shot("1.4", "1.4_gemini_notebook.png", "The <b>genai.Client()</b> + <b>generate_content</b> cells and the start "
+                                                 "of Gemini's answer (no key visible in this copy).")
+story += shot("1.5", "1.5_count_both_models.png", "Both counting functions' <b>Latency: 1.32s</b> / <b>Latency: 3.18s</b> "
+                                                   "lines and both answers. Two pictures OK: 1.5a_…, 1.5b_….")
+story += shot("1.6", "1.6_reasoning.png", "The four apple cells with their Latency lines and answers. Two pictures OK: "
+                                          "1.6a_…, 1.6b_….")
+story += shot("1.8", "1.8_comparison_table.png", "The Checkpoint Questions cell with the corrected comparison table.")
+story.append(step("The chat window: click the <b>import ollama</b> cell near the top and press " + key("Shift") + " + "
+                  + key("Enter") + ", then do the same for the three Gradio cells at the bottom. Open "
+                  "<b>http://127.0.0.1:7860</b> and ask it something."))
+story += shot("1.7", "1.7_gradio_chat.png", "The 'Week 1: Local LLM Chat (Ollama)' page with an answer.")
 story += finish_week(1, [10])
 story.append(PageBreak())
 
