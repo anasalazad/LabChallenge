@@ -1,0 +1,608 @@
+{
+    "name": "RAG Ingestion",
+    "flow": [
+        {
+            "id": 11,
+            "module": "google-drive:getAFile",
+            "version": 4,
+            "parameters": {
+                "__IMTCONN__": 14433992
+            },
+            "mapper": {
+                "file": "/1PzYihj_ojJ1LXdyCI7kOru_C-AnZnRnC/1R8PaYA1BHvL76Oe4oUDAiRvxGX1hnCQm/10Ww5QjwvRoo3XVeo3IPluwtP4k8fTns1/1OdufSCwTqM3AZDjfXhcx6qS6Hp8zcDl_",
+                "select": "value",
+                "destination": "drive",
+                "formatDrawings": "image/jpeg",
+                "formatDocuments": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "formatSpreadsheets": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "formatPresentations": "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            },
+            "metadata": {
+                "designer": {
+                    "x": -331,
+                    "y": 9
+                },
+                "restore": {
+                    "expect": {
+                        "file": {
+                            "path": [
+                                "DUNGLAILAPTRINH",
+                                "Intelligent Systems Lab",
+                                "text files",
+                                "intelligent_agents_overview.txt"
+                            ]
+                        },
+                        "select": {
+                            "label": "Select from the list"
+                        },
+                        "destination": {
+                            "label": "My Drive"
+                        },
+                        "formatDrawings": {
+                            "label": "JPEG"
+                        },
+                        "formatDocuments": {
+                            "label": "MS Word Document"
+                        },
+                        "formatSpreadsheets": {
+                            "label": "MS Excel"
+                        },
+                        "formatPresentations": {
+                            "label": "MS PowerPoint"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google-drive"
+                            },
+                            "label": "My Google Drive connection (dqduong2003@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google-restricted,google-drive",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Enter a File ID",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "map",
+                                "value"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatDocuments",
+                        "type": "select",
+                        "label": "Convert Google Documents Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                                "application/pdf",
+                                "application/vnd.oasis.opendocument.text",
+                                "text/html",
+                                "text/plain",
+                                "application/rtf",
+                                "text/markdown"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatSpreadsheets",
+                        "type": "select",
+                        "label": "Convert Google Spreadsheets Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                "application/x-vnd.oasis.opendocument.spreadsheet",
+                                "application/pdf",
+                                "text/csv"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatPresentations",
+                        "type": "select",
+                        "label": "Convert Google Slides Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                                "application/pdf"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatDrawings",
+                        "type": "select",
+                        "label": "Convert Google Drawings Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "image/jpeg",
+                                "image/png",
+                                "image/svg+xml",
+                                "application/pdf"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "destination",
+                        "type": "select",
+                        "label": "Choose a Drive",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "file",
+                        "type": "file",
+                        "label": "File ID",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "module": "ai-tools:CountAndChunkText",
+            "version": 2,
+            "parameters": {},
+            "mapper": {
+                "input": "{{11.data}}",
+                "chunkSize": "200",
+                "chunkOverlap": "20"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 31,
+                    "y": 7
+                },
+                "restore": {},
+                "expect": [
+                    {
+                        "name": "input",
+                        "type": "text",
+                        "label": "Text to chunk",
+                        "required": true
+                    },
+                    {
+                        "name": "chunkSize",
+                        "type": "uinteger",
+                        "label": "Chunk size",
+                        "required": true,
+                        "validate": {
+                            "min": 1
+                        }
+                    },
+                    {
+                        "name": "chunkOverlap",
+                        "type": "uinteger",
+                        "label": "Chunk overlap",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 9,
+            "module": "builtin:BasicFeeder",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "array": "{{6.chunks}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 350,
+                    "y": 12
+                },
+                "restore": {
+                    "expect": {
+                        "array": {
+                            "mode": "edit"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "mode": "edit",
+                        "name": "array",
+                        "spec": [],
+                        "type": "array",
+                        "label": "Array"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "module": "gemini-ai:generateEmbeddings",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 14433994
+            },
+            "mapper": {
+                "model": "gemini-embedding-2",
+                "content": {
+                    "parts": [
+                        {
+                            "text": "{{9.value}}",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "output_dimensionality": "1024"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 656,
+                    "y": 2
+                },
+                "restore": {
+                    "expect": {
+                        "model": {
+                            "mode": "chose",
+                            "label": "Gemini Embedding 2"
+                        },
+                        "content": {
+                            "nested": {
+                                "parts": {
+                                    "mode": "chose",
+                                    "items": [
+                                        {
+                                            "type": {
+                                                "mode": "chose",
+                                                "label": "Text"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "gemini-ai-q9zyjp"
+                            },
+                            "label": "My Gemini AI connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:gemini-ai-q9zyjp",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "model",
+                        "type": "select",
+                        "label": "AI Model",
+                        "required": true
+                    },
+                    {
+                        "name": "content",
+                        "spec": [
+                            {
+                                "name": "parts",
+                                "spec": [
+                                    {
+                                        "name": "type",
+                                        "type": "select",
+                                        "label": "Message Type",
+                                        "options": [
+                                            {
+                                                "label": "Text",
+                                                "value": "text",
+                                                "nested": [
+                                                    {
+                                                        "name": "text",
+                                                        "type": "text",
+                                                        "label": "Text",
+                                                        "required": true
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "label": "File",
+                                                "value": "file",
+                                                "nested": [
+                                                    {
+                                                        "name": "file_data",
+                                                        "spec": [
+                                                            {
+                                                                "name": "mime_type",
+                                                                "type": "text",
+                                                                "label": "Mime Type",
+                                                                "required": true
+                                                            },
+                                                            {
+                                                                "help": "You can use public or signed URLs as input by using the URLs (for example from the 'Upload a file' module).",
+                                                                "name": "file_uri",
+                                                                "type": "text",
+                                                                "label": "File URI",
+                                                                "required": true
+                                                            }
+                                                        ],
+                                                        "type": "collection",
+                                                        "label": "File Data",
+                                                        "required": true
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "required": true
+                                    }
+                                ],
+                                "type": "array",
+                                "label": "Parts",
+                                "required": true
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Messages",
+                        "required": true
+                    },
+                    {
+                        "name": "output_dimensionality",
+                        "type": "number",
+                        "label": "Output Dimensionality",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 14,
+            "module": "pinecone:upsertVector",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 14433999
+            },
+            "mapper": {
+                "id": "{{11.name}}-chunk-{{9.`__IMTINDEX__`}}",
+                "values": "{{3.embedding.values}}",
+                "metadata": [
+                    {
+                        "fieldName": "text",
+                        "fieldType": "string",
+                        "fieldValue": "{{9.value}}"
+                    },
+                    {
+                        "fieldName": "source",
+                        "fieldType": "string",
+                        "fieldValue": "{{11.name}}"
+                    }
+                ],
+                "namespace": "week3-lab",
+                "sparseVector": {}
+            },
+            "metadata": {
+                "designer": {
+                    "x": 956,
+                    "y": 2
+                },
+                "restore": {
+                    "expect": {
+                        "values": {
+                            "mode": "edit"
+                        },
+                        "metadata": {
+                            "mode": "chose",
+                            "items": [
+                                {
+                                    "fieldType": {
+                                        "mode": "chose",
+                                        "label": "String"
+                                    }
+                                },
+                                {
+                                    "fieldType": {
+                                        "mode": "chose",
+                                        "label": "String"
+                                    }
+                                }
+                            ]
+                        },
+                        "sparseVector": {
+                            "nested": {
+                                "values": {
+                                    "mode": "chose"
+                                },
+                                "indices": {
+                                    "mode": "chose"
+                                }
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "pinecone"
+                            },
+                            "label": "My Pinecone connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:pinecone",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "Record ID",
+                        "required": true
+                    },
+                    {
+                        "name": "namespace",
+                        "type": "text",
+                        "label": "Namespace"
+                    },
+                    {
+                        "name": "values",
+                        "spec": {
+                            "name": "value",
+                            "type": "number",
+                            "label": "Value"
+                        },
+                        "type": "array",
+                        "label": "Values",
+                        "required": true
+                    },
+                    {
+                        "name": "sparseVector",
+                        "spec": [
+                            {
+                                "name": "indices",
+                                "spec": {
+                                    "name": "value",
+                                    "type": "integer",
+                                    "label": "Index"
+                                },
+                                "type": "array",
+                                "label": "Indices"
+                            },
+                            {
+                                "name": "values",
+                                "spec": {
+                                    "name": "value",
+                                    "type": "number",
+                                    "label": "Value"
+                                },
+                                "type": "array",
+                                "label": "Values"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Sparse Vector"
+                    },
+                    {
+                        "name": "metadata",
+                        "spec": [
+                            {
+                                "name": "fieldName",
+                                "type": "text",
+                                "label": "Key",
+                                "required": true
+                            },
+                            {
+                                "name": "fieldType",
+                                "type": "select",
+                                "label": "Type",
+                                "options": [
+                                    {
+                                        "label": "String",
+                                        "value": "string",
+                                        "nested": [
+                                            {
+                                                "name": "fieldValue",
+                                                "type": "text",
+                                                "label": "Value",
+                                                "required": true
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "label": "Number",
+                                        "value": "number",
+                                        "nested": [
+                                            {
+                                                "name": "fieldValue",
+                                                "type": "number",
+                                                "label": "Value",
+                                                "required": true
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "label": "Boolean",
+                                        "value": "boolean",
+                                        "nested": [
+                                            {
+                                                "name": "fieldValue",
+                                                "type": "boolean",
+                                                "label": "Value",
+                                                "required": true
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "label": "List",
+                                        "value": "list",
+                                        "nested": [
+                                            {
+                                                "name": "fieldValue",
+                                                "spec": {
+                                                    "type": "text",
+                                                    "label": "Value"
+                                                },
+                                                "type": "array",
+                                                "label": "Value",
+                                                "required": true
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "required": true
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Metadata"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu2.make.com",
+        "notes": []
+    }
+}
