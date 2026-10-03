@@ -91,6 +91,7 @@ def process(docx_path, check_only=False):
             para.alignment = WD_ALIGN_PARAGRAPH.CENTER
             para.paragraph_format.space_before = Pt(6)
             para.paragraph_format.space_after = Pt(2)
+            para.paragraph_format.keep_with_next = True   # keep the caption with the image
             para.add_run().add_picture(img, width=picture_width(img))
         table._tbl.getparent().remove(table._tbl)
 

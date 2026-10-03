@@ -1,0 +1,31 @@
+# COS30018 Labs 5-9 - everything needed to run all the notebooks + tools locally
+# Python 3.10 - 3.12 recommended (TensorFlow can lag behind the newest Python)
+#
+#   python -m venv .venv
+#   .venv\Scripts\activate          (Windows)   |   source .venv/bin/activate   (Mac/Linux)
+#   pip install -r requirements.txt
+
+# Labs 5-6: Python, scikit-learn, Naive Bayes, PCA
+numpy
+pandas
+matplotlib
+scikit-learn
+
+# Jupyter (run the .ipynb notebooks locally)
+jupyter
+notebook
+ipykernel
+
+# Lab 7: TensorFlow (Keras 3) + PyTorch
+tensorflow
+torch
+
+# Lab 8: PyTorch (above) - RNN / LSTM / GRU / attention
+
+# Lab 9: Gymnasium (Taxi, CartPole, CliffWalking) - pygame comes with the extras
+gymnasium[classic-control,toy-text]
+tqdm
+
+# _tools/ (worklog builder, screenshot inserter, checklist ticker)
+python-docx
+pillow

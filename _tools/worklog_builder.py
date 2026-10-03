@@ -425,6 +425,7 @@ def build_worklog(spec, out_path):
         p = _new_paragraph_after(anchor, doc._body)
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         _set_spacing(p, before=6, after=2)
+        p.paragraph_format.keep_with_next = True   # keep the caption on the same page
         p.add_run().add_picture(fig["path"], width=Inches(fig.get("width", 6.0)))
         cap = _new_paragraph_after(p._p, doc._body)
         cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -454,6 +455,8 @@ def build_worklog(spec, out_path):
                           "`python _tools/insert_screenshots.py` "
                           "(or just paste the image here and delete this box).",
                        size=8, italic=True)
+        for cp_ in cell.paragraphs:                 # keep box + caption together
+            cp_.paragraph_format.keep_with_next = True
         cap = _new_paragraph_after(t._tbl, doc._body)
         cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
         _set_spacing(cap, before=2, after=8)

@@ -63,10 +63,12 @@ The hyperparameters to tune are the number of neurons, activation function, opti
 """
 
 # Sequential create a stack of layers
+tf.keras.utils.set_random_seed(42)   # (my addition) same starting weights every run, so my results are reproducible
 model = tf.keras.models.Sequential()
 
 # Add our input layer
-model.add(tf.keras.layers.InputLayer(input_shape=28*28))            # Input shape is the dimension of flatten images
+# model.add(tf.keras.layers.InputLayer(input_shape=28*28))   # original line -> ValueError: Cannot convert '784' to a shape (Keras 3)
+model.add(tf.keras.layers.InputLayer(shape=(28*28,)))             # (my fix) Keras 3 wants `shape` as a tuple. Input shape is the dimension of flatten images
 # Add our 1st hidden layer
 model.add(tf.keras.layers.Dense(units=32, activation='relu'))       # 1st hidden layer with 64 units, you can tweak it to any number you want 
 # Add our 2nd hidden layer
