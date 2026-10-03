@@ -62,7 +62,14 @@ Open the repo folder in Claude Code and say e.g. *"Read CLAUDE.md and Lab 5/CLAU
 
 ## Things that didn't work in the cloud (so you know)
 - **California Housing download** (Lab 5) – the cloud network blocked `ndownloader.figshare.com`. Works in Colab / on your laptop; `Lab 5/CLAUDE.md` has the steps.
-- **Pushing to GitHub** – the Claude GitHub App didn't have access to this repo. If the changes aren't on GitHub yet: reconnect GitHub at <https://claude.ai/connect-github> and install the Claude GitHub App on `anasalazad/LabChallenge` from that page.
+- **Pushing to GitHub** – the Claude GitHub App didn't have access to this repo, so the work couldn't be pushed from the cloud. Two ways to get it onto GitHub:
+  1. **Fix the access:** reconnect GitHub at <https://claude.ai/connect-github> and install the Claude GitHub App on `anasalazad/LabChallenge` from that page, then ask Claude to push the branch `claude/optimistic-cray-x20tfr`.
+  2. **Push it yourself from the zip** (`LabChallenge_Labs5-9_completed.zip` that Claude sent you – it contains this whole repo *with* its git history):
+     ```bash
+     # unzip it somewhere, then in a terminal inside the unzipped LabChallenge folder:
+     git push -u origin claude/optimistic-cray-x20tfr      # uses your own GitHub login
+     ```
+     Then on GitHub either open a pull request from that branch into `main`, or merge it locally (`git checkout main && git merge claude/optimistic-cray-x20tfr && git push`).
 
 ## Two honest notes
 - Bugs found in the tutor's material (worth mentioning in class): Lab 7's notebook crashes on current TensorFlow (`InputLayer(input_shape=28*28)` → fixed with `shape=(28*28,)`); Lab 6's PCA notebook isn't reproducible (no random seed – added one); the template's page-2 footer said "COS40005_worklog" (fixed in the generated worklogs).
