@@ -1,6 +1,7 @@
 [
     {
         "model": "gemini-3.5-flash-lite",
-        "api_key": "Your API Key"
+        "api_key": "Your API Key",
+        "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/"
     }
 ]

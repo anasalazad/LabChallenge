@@ -96,22 +96,24 @@ def _style_run(run, bold=False, italic=False, size=10, colour=None,
 
 
 def _add_rich_text(paragraph, text, size=10, base_bold=False, italic=False,
-                   colour=None):
-    """Very small markup: **bold** and `code` inside a string."""
+                   colour=None, _mono=False, _hl=None):
+    """Very small markup: **bold**, `code` and [[still to fill in]] (yellow) inside a string.
+    They can be nested, e.g. **[[x]]/20** or `[[model name]]`."""
     import re
-    tokens = re.split(r"(\*\*.+?\*\*|`.+?`)", text)
+    tokens = re.split(r"(\*\*.+?\*\*|`.+?`|\[\[.+?\]\])", text)
     for tok in tokens:
         if not tok:
             continue
-        if tok.startswith("**") and tok.endswith("**"):
-            _style_run(paragraph.add_run(tok[2:-2]), bold=True, italic=italic,
-                       size=size, colour=colour)
-        elif tok.startswith("`") and tok.endswith("`"):
-            _style_run(paragraph.add_run(tok[1:-1]), bold=base_bold,
-                       italic=italic, size=size - 0.5, colour=colour, mono=True)
+        if tok.startswith("**") and tok.endswith("**") and len(tok) > 4:
+            _add_rich_text(paragraph, tok[2:-2], size, True, italic, colour, _mono, _hl)
+        elif tok.startswith("`") and tok.endswith("`") and len(tok) > 2:
+            _add_rich_text(paragraph, tok[1:-1], size, base_bold, italic, colour, True, _hl)
+        elif tok.startswith("[[") and tok.endswith("]]") and len(tok) > 4:
+            _add_rich_text(paragraph, tok[2:-2], size, base_bold, italic, colour, _mono, "yellow")
         else:
             _style_run(paragraph.add_run(tok), bold=base_bold, italic=italic,
-                       size=size, colour=colour)
+                       size=size - 0.5 if _mono else size, colour=colour, mono=_mono,
+                       highlight=_hl)
     return paragraph
 
 
@@ -242,7 +244,11 @@ def build_worklog(spec, out_path):
       "screenshots": [{"id": "5.1", "title": "...", "what": "...",
                        "file": "screenshots/5.1_xxx.png"}, ...],
       "notes": ["optional extra paragraph", ...],
+      "sections": [{"heading": "...", "paragraphs": [...],
+                    "table": {"header": [...], "rows": [[...]], "widths": [twips...]},
+                    "qa": [("question", "answer" or [paragraphs])]}, ...],
     }
+    Text markup everywhere: **bold**, `code`, [[yellow = still to fill in]].
     """
     doc = Document(TEMPLATE)
     body = doc.element.body
@@ -486,6 +492,58 @@ def build_worklog(spec, out_path):
         _set_spacing(p, before=4, after=4)
         _add_rich_text(p, note, size=9)
         anchor = p._p
+
+    # extra sections after the screenshots (deliverable tables, checkpoint answers...)
+    for sec in spec.get("sections", []):
+        if sec.get("heading"):
+            p = _new_paragraph_after(anchor, doc._body)
+            _set_spacing(p, before=12, after=4)
+            p.paragraph_format.keep_with_next = True
+            _add_rich_text(p, sec["heading"], size=11, base_bold=True)
+            anchor = p._p
+        for para in sec.get("paragraphs", []):
+            p = _new_paragraph_after(anchor, doc._body)
+            _set_spacing(p, before=0, after=4)
+            _add_rich_text(p, para, size=9)
+            anchor = p._p
+        if sec.get("table"):
+            tab = sec["table"]
+            ncols = len(tab["header"])
+            widths = tab.get("widths") or [8965 // ncols] * ncols
+            t = _new_table_after(doc, anchor, rows=len(tab["rows"]) + 1, cols=ncols)
+            _table_borders(t)
+            _table_width(t, sum(widths), widths)
+            for r_i, values in enumerate([tab["header"]] + tab["rows"]):
+                tr = t.rows[r_i]
+                trpr = tr._tr.get_or_add_trPr()
+                if trpr.find(qn("w:cantSplit")) is None:
+                    trpr.insert(0, OxmlElement("w:cantSplit"))
+                for c_i, val in enumerate(values):
+                    cell = tr.cells[c_i]
+                    _clear_cell(cell)
+                    if r_i == 0:
+                        _shade(cell, HEADER_FILL)
+                    cp_ = cell.add_paragraph()
+                    _set_spacing(cp_, before=2, after=2)
+                    _add_rich_text(cp_, str(val), size=8.5,
+                                   base_bold=(r_i == 0 or (c_i == 0 and tab.get("bold_first_col", True))))
+            anchor = t._tbl
+            if tab.get("caption"):
+                cap = _new_paragraph_after(anchor, doc._body)
+                _set_spacing(cap, before=2, after=6)
+                _add_rich_text(cap, tab["caption"], size=8.5, italic=True)
+                anchor = cap._p
+        for q, a in sec.get("qa", []):
+            p = _new_paragraph_after(anchor, doc._body)
+            _set_spacing(p, before=6, after=2)
+            p.paragraph_format.keep_with_next = True
+            _add_rich_text(p, q, size=9.5, base_bold=True)
+            anchor = p._p
+            for para in (a if isinstance(a, list) else [a]):
+                p = _new_paragraph_after(anchor, doc._body)
+                _set_spacing(p, before=0, after=3)
+                _add_rich_text(p, para, size=9)
+                anchor = p._p
 
     # ---- 5. tidy-ups ---------------------------------------------------------
     # (a) only keep one blank line between the checklist and the week table

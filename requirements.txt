@@ -1,9 +1,24 @@
-# COS30018 Labs 5-9 - everything needed to run all the notebooks + tools locally
+# COS30018 Labs 1-3 and 5-9 - everything needed to run the notebooks/scripts + tools locally
+# (Lab 4 / AutoGen needs its OWN Python 3.12 environment: see Lab 4/Multiagent/requirements.txt)
 # Python 3.10 - 3.12 recommended (TensorFlow can lag behind the newest Python)
 #
 #   python -m venv .venv
 #   .venv\Scripts\activate          (Windows)   |   source .venv/bin/activate   (Mac/Linux)
 #   pip install -r requirements.txt
+
+# Lab 1: local (Ollama) + cloud (Gemini) LLMs, Gradio chat
+ollama
+google-genai
+python-dotenv
+requests
+gradio
+
+# Lab 2: smolagents (web search tool + local TransformersModel)
+smolagents[toolkit]
+smolagents[transformers]
+
+# Lab 3: RAG with Pinecone (also google-genai + python-dotenv above)
+pinecone
 
 # Labs 5-6: Python, scikit-learn, Naive Bayes, PCA
 numpy

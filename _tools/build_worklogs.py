@@ -2,8 +2,8 @@
 (Re)builds the weekly worklogs  "Lab N/LabN_Worklog_WeekN.docx"  from the
 content files in _tools/worklog_content/weekN.py and the official template.
 
-    python _tools/build_worklogs.py            # all weeks (5-9)
-    python _tools/build_worklogs.py 5 8        # just weeks 5 and 8
+    python _tools/build_worklogs.py            # weeks 1-4 (5-9 are finished - give the number to rebuild one)
+    python _tools/build_worklogs.py 1 3        # just weeks 1 and 3
     python _tools/build_worklogs.py 5 --force  # overwrite even if edited by hand
 
 Safety: every build stores a fingerprint of the generated file in
@@ -21,7 +21,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from worklog_builder import REPO_ROOT, build_worklog  # noqa: E402
 
-WEEKS = [5, 6, 7, 8, 9]
+WEEKS = [1, 2, 3, 4]
 HASH_FILE = os.path.join(REPO_ROOT, "_tools", ".generated_hashes.json")
 
 

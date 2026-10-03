@@ -33,7 +33,12 @@ def chat_to_message(chat_history):
 
         messages.append(
             {
-                "content": msg[1],
+                # (my fix) a "show file:" reply is a file, not text - the model only needs to know that
+                "content": (
+                    msg[1]
+                    if isinstance(msg[1], str)
+                    else "[a file was shown in the chat]"
+                ),
                 "role": "assistant",
             }
         )
@@ -81,15 +86,13 @@ def initiate_chat(
 
     if len(
         config_list[0].get("api_key", "")
-    ) < 2:
+    ) < 2 or config_list[0].get("api_key", "").startswith("Your"):
 
-        chat_history.append(
-            [
-                user_message,
-            ]
+        # (my fix) the original appended a 1-item list, which the chat window can't display
+        return (
+            "No API key found - put GEMINI_API_KEY=... in the .env file "
+            "(top folder of the repo) and restart app.py."
         )
-
-        return chat_history
 
     else:
 
@@ -126,25 +129,14 @@ def initiate_chat(
             filename
         )
 
+        # (my fix) return the reply - gr.ChatInterface adds [message, reply] to the chat itself
         if os.path.exists(filepath):
 
-            chat_history.append(
-                [
-                    user_message,
-                    (filepath,),
-                ]
-            )
+            return (filepath,)
 
         else:
 
-            chat_history.append(
-                [
-                    user_message,
-                    f"File {filename} not found.",
-                ]
-            )
-
-        return chat_history
+            return f"File {filename} not found."
 
     assistant.reset()
 
@@ -173,7 +165,11 @@ def initiate_chat(
             userproxy.chat_messages
         )
 
-        chat_history += (
+        # (my fix) the original added every message pair to chat_history AND returned "",
+        # so gr.ChatInterface then added [message, ""] again at the bottom (the user's
+        # message showed twice + an empty bubble). Now the whole agent conversation is
+        # returned as ONE reply, with the name of the agent above each message.
+        reply = format_conversation(
             message_to_chat(
                 messages,
                 assistant
@@ -182,12 +178,7 @@ def initiate_chat(
 
     except Exception as e:
 
-        chat_history.append(
-            [
-                user_message,
-                str(e)
-            ]
-        )
+        reply = f"Error: {e}"
 
     assistant._oai_system_message = (
         assistant
@@ -197,10 +188,33 @@ def initiate_chat(
 
     if LOG_LEVEL == "DEBUG":
         print(
-            f"chat_history: {chat_history}"
+            f"reply: {reply}"
         )
 
-    return chat_history
+    return reply
+
+
+def format_conversation(pairs):
+    """(my addition) [[userproxy msg, assistant msg], ...] -> one Markdown reply.
+    The first userproxy message is my own question, so it isn't repeated."""
+
+    parts = []
+
+    for i, (proxy_msg, assistant_msg) in enumerate(pairs):
+
+        if i > 0 and proxy_msg:
+            parts.append(
+                "**🖥️ userproxy** (ran the code):\n\n```\n"
+                + proxy_msg.strip()
+                + "\n```"
+            )
+
+        if assistant_msg:
+            parts.append(
+                "**🤖 assistant:**\n\n" + assistant_msg.strip()
+            )
+
+    return "\n\n---\n\n".join(parts) or "(no reply)"
 
 
 def chatbot_reply_thread(
@@ -233,29 +247,22 @@ def chatbot_reply_thread(
 
             thread.join()
 
-            messages = [
-                input_text,
-                (
-                    "Timeout Error: Please check "
-                    "your API keys and try again later."
-                ),
-            ]
+            # (my fix) return a reply, not a half [input, text] pair
+            messages = (
+                f"Timeout Error: no answer within {TIMEOUT} s. Please check "
+                "your API keys and try again later."
+            )
 
     except Exception as e:
 
-        messages = [
-            [
-                input_text,
-                (
-                    str(e)
-                    if len(str(e)) > 0
-                    else (
-                        "Invalid Request to OpenAI, "
-                        "please check your API keys."
-                    )
-                ),
-            ]
-        ]
+        messages = (
+            str(e)
+            if len(str(e)) > 0
+            else (
+                "Invalid Request to OpenAI, "
+                "please check your API keys."
+            )
+        )
 
     return messages
 
@@ -277,13 +284,15 @@ def chatbot_reply(
 def chat_respond(
     message,
     chat_history,
-    model,
-    oai_key,
-    aoai_key,
-    aoai_base
+    model=None,
+    oai_key=None,
+    aoai_key=None,
+    aoai_base=None
 ):
+    # (my fix) model / keys come from CONFIG_LIST.json + .env, so these are optional now
+    # (app.py never passes them), and the reply is returned instead of ""
 
-    chat_history[:] = chatbot_reply(
+    reply = chatbot_reply(
         message,
         chat_history,
         config_list
@@ -291,7 +300,7 @@ def chat_respond(
 
     if LOG_LEVEL == "DEBUG":
         print(
-            f"return chat_history: {chat_history}"
+            f"return reply: {reply}"
         )
 
-    return ""
+    return reply

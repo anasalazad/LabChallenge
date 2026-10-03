@@ -3,7 +3,16 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .venv/
+.venv-*/
 venv/
+
+# API keys (Labs 1-4) - NEVER commit these
+.env
+**/.env
+
+# Lab 4 (AutoGen): reply cache + the code the agents write and run
+.cache/
+Lab 4/Multiagent/coding/
 
 # backups made by _tools/insert_screenshots.py and _tools/tick_checklist.py
 *.bak.docx
