@@ -1,13 +1,15 @@
-# CLAUDE.md – COS30018 Labs 5–9 (repo root)
+# CLAUDE.md – COS30018 Labs 1–9 (repo root)
 
-This repo is Anas Al Azad's COS30018 *Intelligent Systems* (Swinburne) lab challenge: complete **Labs 5–9** and document each one in the unit's **Lab Work Log** template. Most of the work was done in a cloud Claude session; what's left needs Anas's own machine/accounts (Google Colab, local installs, screenshots) or things the cloud network blocked. **Each lab folder has its own `CLAUDE.md` with the exact remaining steps – read the one for the lab you're working on.**
+This repo is Anas Al Azad's COS30018 *Intelligent Systems* (Swinburne) lab challenge: complete the labs and document each one in the unit's **Lab Work Log** template. Most of the work was done in cloud Claude sessions; what's left needs Anas's own machine/accounts (API keys, Colab, local installs, screenshots) or things the cloud network blocked.
+- **Labs 5–9:** done and handed in by Anas (his final copies are in `Completed Labs/`). Each of those folders has its own `CLAUDE.md`.
+- **Labs 1–4:** code written and tested offline (fake LLM/Pinecone servers), worklogs built with yellow `[[placeholders]]`. No per-lab CLAUDE.md/Anas.md (Anas asked not to); the steps are in `START_HERE_Labs1-4_click_by_click.pdf` (built by `_tools/make_guide_labs1_4.py`).
 
 ## Layout
 ```
 Lab Worklog Template.docx      tutor's template (don't edit – the builder clones it)
 requirements.txt               everything needed to run all labs locally
 Anas.md                        overall guide for Anas (human)
-Lab N/                         one folder per lab (N = 5..9, Lab N = "Week N tutorial")
+Lab N/                         one folder per lab (N = 1..9, Lab N = "Week N tutorial")
   LabN_Worklog_WeekN.docx      the filled-in worklog for that week
   Anas.md / CLAUDE.md          what's left, for the human / for you
   screenshots/                 Anas saves screenshots here (README lists the names)
@@ -17,6 +19,9 @@ _tools/
   worklog_builder.py           builds a worklog .docx from the template
   build_worklogs.py            python _tools/build_worklogs.py [week ...] [--force]
   worklog_content/weekN.py     the TEXT of each week's worklog (edit here, then rebuild)
+                               weeks 1-4 use build_spec() + _results.py: they read Lab N/results/*.json
+  make_handin.py               python _tools/make_handin.py <week>  -> Completed Labs/Lab N Completed.docx
+  make_guide_labs1_4.py        builds START_HERE_Labs1-4_click_by_click.pdf
   insert_screenshots.py        python _tools/insert_screenshots.py [week ...] [--check]
   tick_checklist.py            python _tools/tick_checklist.py <week> [items...] [--all] [--untick]
   .generated_hashes.json       fingerprints used to detect hand-edited worklogs
@@ -36,12 +41,18 @@ Execute a notebook headless: `jupyter nbconvert --to notebook --execute --inplac
 - **Rebuilding overwrites a worklog.** `build_worklogs.py` refuses if the .docx changed since it was generated (Anas typed in it, pasted/inserted screenshots, ticked boxes). **Never pass `--force` on a worklog Anas has edited** – edit the .docx in place with python-docx instead (find the paragraph/cell text and replace it; keep Arial and the existing formatting).
 - Normal order of operations: (1) update numbers/text in `_tools/worklog_content/weekN.py` + rebuild **before** Anas adds anything, then (2) `insert_screenshots.py`, (3) `tick_checklist.py`.
 - Screenshot files: `Lab N/screenshots/N.x_anything.png` (split shots: `N.xa_…`, `N.xb_…`). The inserter swaps each yellow `[SCREENSHOT N.x]` box for the image(s) and keeps the caption; it writes a `.bak.docx` backup (gitignored).
-- Worklog voice = Anas's informal, first-person student voice. Only write things that actually happened (real numbers from real runs, real problems). Dates: Week 5 = 10–16 Sep 2026 … Week 9 = 8–14 Oct 2026 (derived from the template's Week 6 = 17–23 Sep); Anas may correct them.
-- Student ID is blank on purpose (`student_id` in each `weekN.py`, and `STUDENT_ID` in `Lab 8/make_summary.py`) – fill it only when Anas gives it to you.
+- Worklog voice = Anas's informal, first-person student voice – **plain, not too technical** (Anas's feedback). Only write things that actually happened (real numbers from real runs, real problems). Dates (Anas's calendar): Week 1 = 2–9 Aug, Week 2 = 10–16 Aug, Week 3 = 17–23 Aug, Week 4 = 24–30 Aug, Week 5 = 31 Aug–6 Sep 2026.
+- Student ID: 105694136 (used in weeks 1–4).
+- **Labs 1–4 flow:** Anas runs the notebook/scripts → they write `Lab N/results/*.json` (+ figures) → `python _tools/build_worklogs.py N` fills the yellow `[[...]]` placeholders → `insert_screenshots.py N` → `tick_checklist.py N ...` → `make_handin.py N`. Never put results numbers in by hand and never use fake/test outputs as results.
+- **Keys:** one `.env` in the repo root (template `.env.example`, git-ignored): `GEMINI_API_KEY`, `HF_TOKEN`, `PINECONE_API_KEY`, `PINECONE_INDEX`. Never commit it or print keys.
 
 ## Status / what's left (details in each `Lab N/CLAUDE.md`)
 | Lab | Topic | Left for Claude | Left for Anas |
 |---|---|---|---|
+| 1 | Ollama + Gemini, latency, sentiment, reasoning prompt, Gradio | rebuild worklog after Anas's run | Ollama + Gemini key, run `Lab1_LLM_Access.ipynb`, screenshots |
+| 2 | smolagents (search tool, memory, cloud vs local, GradioUI) | same | HF token, run `Lab2_smolagents_agent.ipynb`, screenshots |
+| 3 | RAG: Make.com + `simple-rag/` + Pinecone | same | Pinecone + Make.com in the browser, run the scripts, screenshots |
+| 4 | AutoGen 2-agent app (fixed) + group chat extension | same | Python 3.12 `.venv-autogen`, run app + `run_examples.py` + `groupchat_demo.py`, screenshots |
 | 5 | Python, Colab, sklearn, Linear Regression | run part D of `linear_regression_extras.ipynb` (California Housing download was blocked in the cloud) + put the numbers/figure in the worklog | Colab walkthrough + screenshots, local sklearn install |
 | 6 | Naive Bayes, PCA | nothing required (optional re-run) | screenshots, StatQuest videos |
 | 7 | TensorFlow/PyTorch, MNIST MLP | help with local TF + PyTorch install | installs + screenshots |
@@ -49,6 +60,8 @@ Execute a notebook headless: `jupyter nbconvert --to notebook --execute --inplac
 | 9 | Gymnasium Q-learning | help with Task 2 (local install) | Task 2 on own laptop + screenshots |
 
 ## Gotchas
+- Lab 4: `pyautogen==0.2.28` needs Python ≤ 3.12 and pins old gradio/fastapi → separate venv (`.venv-autogen`). AutoGen caches replies in `.cache/41` (git-ignored). Gemini is used through its OpenAI-compatible `base_url` in `CONFIG_LIST.json`; the key comes from `.env`.
+- Lab 1: `reviews.csv` has columns `Text,Sentiment` (sheet code uses `df['text']`) and all 99 labels are 0.
 - **Never train TensorFlow and PyTorch in the same Python process/kernel** – it segfaults (threading-library clash). Separate notebooks / subprocesses.
 - Keras 3: `InputLayer(shape=(784,))`, not `input_shape=784` (that's the bug fixed in `Lab 7/neural_net.ipynb`).
 - NumPy 2 prints `np.int64(2)` inside lists – expected, not an error.

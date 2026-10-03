@@ -1,5 +1,7 @@
 # Anas – start here 👋
 
+> **Labs 1–4 (new):** open **`START_HERE_Labs1-4_click_by_click.pdf`** and follow it top to bottom (Mac-first, with Windows notes). Short version: `git pull` → make your `.env` from `.env.example` → each week: make the free key, run that lab's notebook/scripts, take the screenshots, then `python _tools/build_worklogs.py N` → `insert_screenshots.py N` → `tick_checklist.py N …` → `make_handin.py N`. The worklogs fill themselves with your real numbers.
+
 > **New to all this? Open `START_HERE_click_by_click_guide.pdf` (in this folder) and just follow it page by page** – it goes from installing Python to handing in Week 9, click by click. This file is the shorter version.
 
 All five labs (5–9) have been worked through. Every lab folder now has:
