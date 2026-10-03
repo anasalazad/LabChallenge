@@ -1,0 +1,20 @@
+# python / jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# backups made by _tools/insert_screenshots.py and _tools/tick_checklist.py
+*.bak.docx
+
+# Word lock files while a .docx is open
+~$*.docx
+
+# things the Colab walkthrough / labs may download locally
+Testing-and-Debugging-Tools/
+scikit_learn_data/
+
+# OS junk
+.DS_Store
+Thumbs.db
