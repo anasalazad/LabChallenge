@@ -14,8 +14,8 @@ All five labs (5–9) have been worked through. Every lab folder now has:
 | [Lab 5](Lab%205/Anas.md) | 5 · 10–16 Sep | Python, Google Colab, sklearn, Linear Regression | 7/12 | Colab walkthrough, run LinReg in Colab, local sklearn install, screenshots | ~1 h |
 | [Lab 6](Lab%206/Anas.md) | 6 · 17–23 Sep | Naïve Bayes, PCA | 9/12 | re-run 2 notebooks + screenshots, 2 videos (optional) | ~30 min |
 | [Lab 7](Lab%207/Anas.md) | 7 · 24–30 Sep | TensorFlow & PyTorch, neural nets, MNIST | 7/11 | install TF + PyTorch on your laptop, run MNIST notebook, screenshots | ~45 min |
-| [Lab 8](Lab%208/Anas.md) | 8 · 1–7 Oct | RNN / LSTM / GRU / Attention + **deliverable** | see Lab 8 | student ID on the summary, screenshots, hand in notebook + summary | ~30 min |
-| [Lab 9](Lab%209/Anas.md) | 9 · 8–14 Oct | Reinforcement learning (Gymnasium, Q-learning) | see Lab 9 | Task 2: install + run on your laptop, screenshots | ~40 min |
+| [Lab 8](Lab%208/Anas.md) | 8 · 1–7 Oct | RNN / LSTM / GRU / Attention + **deliverable** (notebook + one-page summary – both ready) | 9/13 | student ID on the summary, screenshots, hand in notebook + summary | ~30 min |
+| [Lab 9](Lab%209/Anas.md) | 9 · 8–14 Oct | Reinforcement learning (Gymnasium, Q-learning) – Task 1 notebook completed | 7/11 | Task 1 in Colab + Task 2 on your laptop, screenshots | ~40 min |
 
 \*Dates are worked out from the template (Week 6 = 17–23 Sep 2026). If your unit had a mid-semester break, fix them in each worklog.
 

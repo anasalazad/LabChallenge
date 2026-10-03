@@ -51,30 +51,45 @@ def load():
     return data, res
 
 
+def sci(x):
+    """1.5e+13 -> '1.5×10¹³' (looks nicer in the summary)"""
+    mant, exp = f"{x:.1e}".split("e")
+    sup = str.maketrans("-0123456789", "⁻⁰¹²³⁴⁵⁶⁷⁸⁹")
+    return f"{mant}×10{str(int(exp)).translate(sup)}"
+
+
+def order_blind_best(T, n=200_000, seed=0):
+    """Best accuracy possible without knowing the order: guess the most common digit."""
+    X = np.random.default_rng(seed).integers(0, 10, size=(n, T))
+    counts = np.stack([(X == d).sum(1) for d in range(10)], axis=1)
+    return (counts.max(1) / T).mean()
+
+
 def fmt_answers(data, res):
     """The answers quote my actual numbers, so they're filled in from results.json."""
     g = data["grad_ratio"]
     m = lambda k, T: np.mean(res[(k, T)])
-    spread = lambda k, T: (min(res[(k, T)]), max(res[(k, T)]))
-    lo, hi = spread("lstm", 20)
+    runs = lambda k, T: " / ".join(f"{a:.2f}" for a in res[(k, T)])
+    w0 = data["attention_weight_pos0"]
     vals = dict(
-        Q1=(f"Step 0 (the first input) has by far the smallest gradient for all three layers – the "
-            f"last-step/first-step ratio was {g['RNN']:.1e} for the RNN, {g['LSTM']:.1e} for the LSTM and "
-            f"{g['GRU']:.1e} for the GRU. The signal from the loss shrinks at every step on the way back, "
-            f"so the weights get almost no information about the first digit – exactly the one the "
-            f"label depends on. That's why the plain RNN drops to chance (≈0.10) once T gets long."),
-        Q2=(f"With identical settings only the random seed (initial weights + data order) changes, yet "
-            f"e.g. the LSTM at T = 20 ranged from {lo:.2f} to {hi:.2f}. On long sequences the gradient "
-            f"from step 1 is tiny, so whether a run ever “finds” the dependency depends on luck "
-            f"in the initialisation – training is unstable, so you need several seeds (and look at "
-            f"the spread, not one number) before concluding anything."),
-        Q3=(f"Attention is permutation-invariant: it compares every step with every other step by "
-            f"content only, so without positional encoding the model can't tell which digit came "
-            f"first – the sequence is just a bag of digits. Accuracy fell to "
-            f"{m('attn_nopos', 10):.2f} (T = 10) and {m('attn_nopos', 30):.2f} (T = 30) compared with "
-            f"{m('attn', 10):.2f} with it; what's left is roughly guessing from digit frequencies. "
-            f"The sin/cos encoding gives each position a unique tag, so the last position can attend "
-            f"straight to position 0 (weight ≈ {max(data['attention_weight_pos0']):.2f} in my plot)."),
+        Q1=(f"Step 0 – the very first input – has the smallest gradient for all three layers: the "
+            f"gradient at the last step is about {sci(g['RNN'])} times bigger for the RNN, {sci(g['LSTM'])} for "
+            f"the LSTM and {sci(g['GRU'])} for the GRU. But the first digit is exactly what the label is, so the "
+            f"weights get almost no training signal about how to store it. That's why the plain RNN drops to "
+            f"chance ({m('rnn', 20):.2f}) from T = 20, while the gated LSTM/GRU hold on a bit longer "
+            f"(fine at T = 10)."),
+        Q2=(f"Only the seed changes (initial weights + data order), yet the results jump around a lot: the RNN "
+            f"at T = 10 got {runs('rnn', 10)} and the LSTM at T = 20 got {runs('lstm', 20)}. Because the "
+            f"gradient from the early steps is so tiny, whether a run ever finds the link between step 1 and "
+            f"the label is basically luck. So training RNNs on long sequences is unstable – you need "
+            f"several seeds and should look at the spread, not just one number."),
+        Q3=(f"Self-attention on its own doesn't know about order – it compares steps by content only, so "
+            f"without positional encoding the sequence is just a bag of digits and the model can't tell which "
+            f"one came first. The best it can do is guess the most common digit, which I calculated gives "
+            f"≈{order_blind_best(10):.2f} for T = 10 and ≈{order_blind_best(30):.2f} for T = 30 – "
+            f"basically the {m('attn_nopos', 10):.2f} and {m('attn_nopos', 30):.2f} I got. With positional "
+            f"encoding every step gets its own sin/cos tag, so the last position looks straight at position 0 "
+            f"(weights {w0[0]:.2f} / {w0[1]:.2f}) and gets {m('attn', 10):.2f}."),
     )
     return [(q, a.format(**vals)) for q, a in ANSWERS]
 
@@ -134,23 +149,27 @@ def build():
     for c, text in zip(hdr, ["Model"] + [f"T = {T}" for T in TS]):
         shade(c, "DEEAF6")
         cp = c.paragraphs[0]; cp.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        run(cp, text, 8.5, bold=True)
+        run(cp, text, 9, bold=True)
     for r, (key, label) in zip(table.rows[1:], ROWS):
         cp = r.cells[0].paragraphs[0]
-        run(cp, label, 8.5, bold=key in ("attn",))
+        run(cp, label, 9, bold=key in ("attn",))
         for c, T in zip(r.cells[1:], TS):
             cp = c.paragraphs[0]; cp.alignment = WD_ALIGN_PARAGRAPH.CENTER
             if (key, T) in res:
                 v = np.mean(res[(key, T)])
                 colour = (RGBColor(0x1E, 0x7B, 0x34) if v >= 0.9 else
                           RGBColor(0xB0, 0x1E, 0x1E) if v <= 0.2 else None)
-                run(cp, f"{v:.2f}", 8.5, bold=v >= 0.9, colour=colour)
+                run(cp, f"{v:.2f}", 9, bold=v >= 0.9, colour=colour)
             else:
                 run(cp, "–", 8.5, colour=RGBColor(0x99, 0x99, 0x99))
+    table.autofit = False
+    lay = OxmlElement("w:tblLayout"); lay.set(qn("w:type"), "fixed"); table._tbl.tblPr.append(lay)
+    for gc, w in zip(table._tbl.tblGrid.findall(qn("w:gridCol")), [5.0] + [2.2] * len(TS)):
+        gc.set(qn("w:w"), str(int(w / 2.54 * 1440)))
     for row in table.rows:
-        row.cells[0].width = Cm(4.6)
+        row.cells[0].width = Cm(5.0)
         for c in row.cells[1:]:
-            c.width = Cm(2.3)
+            c.width = Cm(2.2)
         for c in row.cells:
             for cp in c.paragraphs:
                 cp.paragraph_format.space_before = Pt(0.5)
@@ -165,17 +184,21 @@ def build():
     run(p, "Gradient plot (Part 1) and attention plot (Part 3)", 10.5, bold=True)
     pt = doc.add_table(rows=1, cols=2)
     pt.alignment = WD_TABLE_ALIGNMENT.CENTER
-    for c, (img, w) in zip(pt.rows[0].cells, [("figures/8_1_gradient_plot.png", 3.05),
-                                               ("figures/8_2_attention_plot.png", 4.0)]):
+    pt.autofit = False
+    tblpr = pt._tbl.tblPr
+    layout = OxmlElement("w:tblLayout"); layout.set(qn("w:type"), "fixed"); tblpr.append(layout)
+    for c, (img, w, cw) in zip(pt.rows[0].cells, [("figures/8_1_gradient_plot.png", 2.68, 2.85),
+                                                   ("figures/8_2_attention_plot.png", 3.72, 3.95)]):
+        c.width = Inches(cw)
         cp = c.paragraphs[0]; cp.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cp.add_run().add_picture(os.path.join(HERE, img), width=Inches(w))
-    pt.rows[0].cells[0].width = Inches(3.15)
-    pt.rows[0].cells[1].width = Inches(4.1)
+    for gc, cw in zip(pt._tbl.tblGrid.findall(qn("w:gridCol")), (2.85, 3.95)):
+        gc.set(qn("w:w"), str(int(cw * 1440)))
     p = para(doc, before=1, after=4, align=WD_ALIGN_PARAGRAPH.CENTER)
     g = data["grad_ratio"]
     w0 = data["attention_weight_pos0"]
     run(p, f"Left: gradient size at each of 50 input steps (log scale) – last/first ratio "
-           f"RNN {g['RNN']:.1e}, LSTM {g['LSTM']:.1e}, GRU {g['GRU']:.1e}.  Right: attention of the last "
+           f"RNN {sci(g['RNN'])}, LSTM {sci(g['LSTM'])}, GRU {sci(g['GRU'])}.  Right: attention of the last "
            f"position at T = 20, averaged over 200 sequences – weight on position 0: head 0 = {w0[0]:.2f}, "
            f"head 1 = {w0[1]:.2f}.", 7.5, italic=True, colour=RGBColor(0x55, 0x55, 0x55))
 
@@ -184,10 +207,10 @@ def build():
     run(p, "Checkpoint questions", 10.5, bold=True)
     for q, a in fmt_answers(data, res):
         p = para(doc, before=2, after=0)
-        run(p, q, 8.8, bold=True)
-        p = para(doc, before=0, after=2)
+        run(p, q, 10, bold=True)
+        p = para(doc, before=0, after=4)
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-        run(p, a, 8.8)
+        run(p, a, 10)
 
     out = os.path.join(HERE, "Lab8_Summary.docx")
     doc.save(out)
