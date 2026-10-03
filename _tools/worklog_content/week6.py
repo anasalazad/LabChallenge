@@ -179,7 +179,7 @@ SPEC = {
                  "`model.predict([[0,2]])`) with the output **Predicted Value: [1]**.",
          "file": "Lab 6/screenshots/6.2_nb_prediction.png"},
         {"id": "6.3", "title": "PCA.ipynb – the generated student data",
-         "what": "the import cell (with my 2 seed lines at the bottom), `data.head()` table and the "
+         "what": "the import cell (**lines 9–11** = my 2 seed lines), the `data.head()` table and the "
                  "`(100, 10)` shape output.",
          "file": "Lab 6/screenshots/6.3_pca_data.png"},
         {"id": "6.4", "title": "PCA.ipynb – scree plot + PCA graph",

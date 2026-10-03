@@ -28,7 +28,7 @@ Everything in this lab runs **offline**, so you can use Colab **or** Jupyter/VS 
 Then take:
 - 📸 **6.1** `Naive_Bayes.ipynb` → section **"Encoding Features"**: the `le.fit_transform(...)` cells and their printed outputs (`weather: [2 2 0 1 …]`, `Temp: …`, `Play: …`) + the combined `features` list.
 - 📸 **6.2** `Naive_Bayes.ipynb` → section **"Generating Model"**: the `GaussianNB()` / `model.fit(features,label)` / `model.predict([[0,2]])` cell with **`Predicted Value: [1]`**.
-- 📸 **6.3** `PCA.ipynb` → first cell (imports – **include the 2 seed lines at the bottom**: `rd.seed(42)` / `np.random.seed(42)`), the `data.head()` table and `(100, 10)`.
+- 📸 **6.3** `PCA.ipynb` → first cell (imports – **include lines 9–11**, my seed lines `rd.seed(42)` / `np.random.seed(42)`), the `data.head()` table and `(100, 10)`.
 - 📸 **6.4** `PCA.ipynb` → the **Scree Plot** and **My PCA Graph** (zoom out so both fit, or do two shots named `6.4a_…` and `6.4b_…` – both get inserted).
 - 📸 **6.5** `PCA.ipynb` → last code cell (loading scores) + its output (10 students with values ≈ ±0.116).
 
@@ -58,7 +58,7 @@ Open `Lab 6/naive_bayes_extras.ipynb` (Colab or laptop), **Run all**, then:
 |---|---|---|---|
 | 6.1 | `Naive_Bayes.ipynb` – "Encoding Features" | `le.fit_transform` cells + printed weather/Temp/Play arrays + features list | `screenshots/6.1_nb_encoding.png` |
 | 6.2 | `Naive_Bayes.ipynb` – "Generating Model" | GaussianNB fit/predict cell + `Predicted Value: [1]` | `screenshots/6.2_nb_prediction.png` |
-| 6.3 | `PCA.ipynb` – top | import cell incl. the 2 seed lines, `data.head()` table, `(100, 10)` | `screenshots/6.3_pca_data.png` |
+| 6.3 | `PCA.ipynb` – top | import cell incl. lines 9–11 (seed lines), `data.head()` table, `(100, 10)` | `screenshots/6.3_pca_data.png` |
 | 6.4 | `PCA.ipynb` – "Visualise the result" | Scree Plot + My PCA Graph (can be 6.4a + 6.4b) | `screenshots/6.4_pca_plots.png` |
 | 6.5 | `PCA.ipynb` – bottom | loading-scores cell + output | `screenshots/6.5_pca_loading_scores.png` |
 | 6.6 | `naive_bayes_extras.ipynb` – parts A + B | probability table, score(N)/score(S), sklearn 0.871 | `screenshots/6.6_spam_by_hand.png` |

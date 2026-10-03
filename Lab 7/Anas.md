@@ -39,7 +39,8 @@
 
 ### Step 2 – run the MNIST notebook yourself (≈10 min) → screenshots 7.4, 7.5
 Laptop (`jupyter notebook` → open `Lab 7/neural_net.ipynb` → **Restart & Run All**) **or** Colab (upload it → Runtime → Run all – Colab already has TensorFlow).
-- 📸 **7.4** – section **"Create our Neural Network"**: the model cell (make sure the fixed line `InputLayer(shape=(28*28,))` and the `set_random_seed(42)` line are visible) + the `model.compile(...)` / `model.fit(...)` cell with all **5 epochs** of output.
+- 📸 **7.4** – section **"Create our Neural Network"**: the whole model cell (13 lines – **line 2** is my seed, **lines 6–7** are the original `InputLayer` line commented out + my fix `InputLayer(shape=(28*28,))`; turn on line numbers with **L** in Jupyter / Tools → Settings → Editor in Colab) + the `model.compile(...)` / `model.fit(...)` cell with all **5 epochs** of output.
+  *(Same fix in the script version: `neural_net.py` **lines 66–71** – optional extra screenshot in VS Code if you want to show it.)*
 - 📸 **7.5** – **"Evaluate the accuracy of test data"** (`Test accuracy: 0.938…`) + **"Do some predictions"**: the `x_test[45]` image and `Predicted label is: 5`.
 
 > Your numbers might differ in the 3rd decimal on a different computer (TensorFlow isn't bit-for-bit identical across CPUs) – that's normal. If they're noticeably different, ask Claude locally to update the worklog numbers.
@@ -67,7 +68,7 @@ You can just open them (outputs are saved) or re-run them (`nn_experiments.ipynb
 | 7.1 | Browser – pytorch.org/get-started/locally | selector with your OS / Pip / Python / CPU + the generated command | `screenshots/7.1_pytorch_selector.png` |
 | 7.2 | Terminal | end of the installs + `pip list` filtered for tensorflow/keras/torch | `screenshots/7.2_pip_list.png` |
 | 7.3 | Terminal | `python screenshot_demo_install_check.py` full output | `screenshots/7.3_install_check.png` |
-| 7.4 | `neural_net.ipynb` – "Create our Neural Network" | model cell (fixed InputLayer line + seed) + compile/fit with 5 epochs | `screenshots/7.4_nn_model_training.png` |
+| 7.4 | `neural_net.ipynb` – "Create our Neural Network" | model cell lines 1–13 (line 2 = seed, lines 6–7 = the fix) + compile/fit with 5 epochs | `screenshots/7.4_nn_model_training.png` |
 | 7.5 | `neural_net.ipynb` – evaluate + predictions | Test accuracy ≈ 0.938, the x_test[45] image, "Predicted label is: 5" | `screenshots/7.5_nn_test_prediction.png` |
 | 7.6 | `nn_experiments.ipynb` – part B | experiments output + results table | `screenshots/7.6_experiments_table.png` |
 | 7.7 | `nn_pytorch.ipynb` | training cell + 5 epoch lines | `screenshots/7.7_pytorch_training.png` |

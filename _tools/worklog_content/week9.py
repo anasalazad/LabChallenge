@@ -178,16 +178,17 @@ SPEC = {
     ],
     "screenshots": [
         {"id": "9.1", "title": "My completed Q-learning code",
-         "what": "the `QLearningAgent` cell scrolled to my `<YOUR CODE HERE>` blocks (`get_value`, "
-                 "`update`, `get_best_action`, `get_action`) – two shots 9.1a / 9.1b is fine.",
-         "file": "Lab 9/screenshots/9.1_qlearning_code.png"},
+         "what": "turn on line numbers, then the `QLearningAgent` cell **lines 47–103** (`get_value`, "
+                 "`update`, `get_best_action`) as 9.1a, **lines 107–140** (`get_action`) as 9.1b, and the "
+                 "`play_and_train` cell **lines 10–25** as 9.1c.",
+         "file": "Lab 9/screenshots/9.1a_qlearning_code.png (+ 9.1b, 9.1c)"},
         {"id": "9.2", "title": "Taxi training (Task 1)",
          "what": "the Taxi training cell with its reward plot and no AssertionError, plus the next cell's "
                  "output (mean reward of the last 100 episodes ≈ 7.78).",
          "file": "Lab 9/screenshots/9.2_taxi_training.png"},
         {"id": "9.3", "title": "CartPole with my discretizer",
-         "what": "my `Discretizer` code + the training plot, and the “How did it go?” output "
-                 "(ewma ≈ 135.9).",
+         "what": "my `Discretizer` code (**lines 13–19** of that cell) + the training plot, and the "
+                 "“How did it go?” output (ewma ≈ 135.9).",
          "file": "Lab 9/screenshots/9.3_cartpole_training.png"},
         {"id": "9.4", "title": "Extra – EV-SARSA vs Q-learning",
          "what": "the CliffWalking benchmark plot, the two average-reward lines and the greedy-path picture.",

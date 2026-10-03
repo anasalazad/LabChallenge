@@ -41,6 +41,29 @@ TODO_COLOUR = RGBColor(0xC0, 0x50, 0x00)
 # --------------------------------------------------------------------------
 # small formatting helpers
 # --------------------------------------------------------------------------
+# OOXML schema order of child elements - Word (unlike LibreOffice) can refuse to
+# open a file whose elements are out of order, so always insert in the right spot
+TBLPR_ORDER = ["tblStyle", "tblpPr", "tblOverlap", "bidiVisual", "tblStyleRowBandSize",
+               "tblStyleColBandSize", "tblW", "jc", "tblCellSpacing", "tblInd", "tblBorders",
+               "shd", "tblLayout", "tblCellMar", "tblLook", "tblCaption", "tblDescription"]
+TCPR_ORDER = ["cnfStyle", "tcW", "gridSpan", "hMerge", "vMerge", "tcBorders", "shd", "noWrap",
+              "tcMar", "textDirection", "tcFitText", "vAlign", "hideMark"]
+
+
+def _insert_ordered(parent, child, order):
+    """Insert `child` into `parent` respecting the schema `order` (local names)."""
+    name = child.tag.split("}")[1]
+    for old in parent.findall(child.tag):
+        parent.remove(old)
+    later = order[order.index(name) + 1:]
+    for i, sib in enumerate(parent):
+        if sib.tag.split("}")[1] in later:
+            parent.insert(i, child)
+            return child
+    parent.append(child)
+    return child
+
+
 def _strip_ids(el):
     """Remove w14:paraId / w14:textId so copied elements don't clash."""
     for node in el.iter():
@@ -118,29 +141,24 @@ def _make_bullet(paragraph):
 
 def _shade(cell, fill):
     tcpr = cell._tc.get_or_add_tcPr()
-    for old in tcpr.findall(qn("w:shd")):
-        tcpr.remove(old)
     shd = OxmlElement("w:shd")
     shd.set(qn("w:val"), "clear")
     shd.set(qn("w:color"), "auto")
     shd.set(qn("w:fill"), fill)
-    tcpr.append(shd)
+    _insert_ordered(tcpr, shd, TCPR_ORDER)
 
 
 def _cell_width(cell, twips):
     tcpr = cell._tc.get_or_add_tcPr()
     tcw = tcpr.find(qn("w:tcW"))
     if tcw is None:
-        tcw = OxmlElement("w:tcW")
-        tcpr.insert(0, tcw)
+        tcw = _insert_ordered(tcpr, OxmlElement("w:tcW"), TCPR_ORDER)
     tcw.set(qn("w:w"), str(twips))
     tcw.set(qn("w:type"), "dxa")
 
 
 def _table_borders(table, val="single", colour="808080", sz=4):
     tblpr = table._tbl.tblPr
-    for old in tblpr.findall(qn("w:tblBorders")):
-        tblpr.remove(old)
     borders = OxmlElement("w:tblBorders")
     for side in ("top", "left", "bottom", "right", "insideH", "insideV"):
         b = OxmlElement(f"w:{side}")
@@ -149,20 +167,19 @@ def _table_borders(table, val="single", colour="808080", sz=4):
         b.set(qn("w:space"), "0")
         b.set(qn("w:color"), colour)
         borders.append(b)
-    tblpr.append(borders)
+    _insert_ordered(tblpr, borders, TBLPR_ORDER)
 
 
 def _table_width(table, twips, grid):
     tblpr = table._tbl.tblPr
     tblw = tblpr.find(qn("w:tblW"))
     if tblw is None:
-        tblw = OxmlElement("w:tblW")
-        tblpr.append(tblw)
+        tblw = _insert_ordered(tblpr, OxmlElement("w:tblW"), TBLPR_ORDER)
     tblw.set(qn("w:w"), str(twips))
     tblw.set(qn("w:type"), "dxa")
     layout = OxmlElement("w:tblLayout")
     layout.set(qn("w:type"), "fixed")
-    tblpr.append(layout)
+    _insert_ordered(tblpr, layout, TBLPR_ORDER)
     tblgrid = table._tbl.tblGrid
     for gc, w in zip(tblgrid.findall(qn("w:gridCol")), grid):
         gc.set(qn("w:w"), str(w))

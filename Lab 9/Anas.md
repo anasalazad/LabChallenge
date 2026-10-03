@@ -23,9 +23,12 @@
 1. <https://colab.research.google.com> → **File → Upload notebook** → `Lab 9/Lab_Week 9.ipynb`.
 2. **Runtime → Run all.** The first cell installs gymnasium + Colab display stuff (~1 min); the whole thing takes a few minutes (CartPole's 10,000 episodes are the slow bit).
 3. Take:
-   - 📸 **9.1** – the `QLearningAgent` cell, scrolled so my filled-in `<YOUR CODE HERE>` blocks are visible. It's long, so two shots are fine: `9.1a_…` (`get_value` + `update`) and `9.1b_…` (`get_best_action` + `get_action`).
+   - 📸 **9.1** – my filled-in code. First switch on line numbers (Colab: **Tools → Settings → Editor → Show line numbers**; Jupyter: click the cell's left margin and press **L**). Then:
+     - `9.1a_…` – `QLearningAgent` cell **lines 47–103** (`get_value`, `update`, `get_best_action` – my `<YOUR CODE HERE>` blocks are lines 61–66, 80–85 and 99–103)
+     - `9.1b_…` – same cell **lines 107–140** (`get_action` – my ε-greedy block is lines 130–138)
+     - `9.1c_…` – the `play_and_train` cell **lines 10–25** (my two lines are 14 and 22)
    - 📸 **9.2** – the Taxi training cell (reward plot, **no AssertionError** under it) + the next cell's output (`mean reward of the last 100 episodes: 7.78 …`).
-   - 📸 **9.3** – the `Discretizer` cell (my per-dimension digits) + the CartPole training plot + the *"How did it go?"* output (`ewma@100 at the end: 135.9`).
+   - 📸 **9.3** – the `Discretizer` cell (**lines 13–19** = my per-dimension rounding) + the cell below it with `n_digits=[0, 1, 2, 1]` + the CartPole training plot + the *"How did it go?"* output (`ewma@100 at the end: 135.9`).
    - 📸 **9.4** – the CliffWalking benchmark plot + the two `Q-learning … / EV-SARSA …` lines + the greedy-path picture.
 
    *(Colab may give slightly different numbers than mine if its gymnasium version differs – that's fine, the checks just need to pass.)*
@@ -60,9 +63,9 @@ jupyter notebook
 
 | # | Where | Exactly what to capture | Save as |
 |---|---|---|---|
-| 9.1 | `Lab_Week 9.ipynb` – `QLearningAgent` cell | my `<YOUR CODE HERE>` blocks (can be 9.1a + 9.1b) | `screenshots/9.1_qlearning_code.png` |
+| 9.1 | `Lab_Week 9.ipynb` – `QLearningAgent` + `play_and_train` cells (line numbers on) | 9.1a = lines 47–103, 9.1b = lines 107–140, 9.1c = `play_and_train` lines 10–25 | `screenshots/9.1a_….png`, `9.1b_….png`, `9.1c_….png` |
 | 9.2 | Taxi training cell + next cell | reward plot, no AssertionError, mean reward 7.78 | `screenshots/9.2_taxi_training.png` |
-| 9.3 | Discretizer + CartPole training + "How did it go?" | my discretizer, the plot, ewma 135.9 | `screenshots/9.3_cartpole_training.png` |
+| 9.3 | Discretizer (lines 13–19) + CartPole training + "How did it go?" | my discretizer, the plot, ewma 135.9 | `screenshots/9.3_cartpole_training.png` |
 | 9.4 | the last 3 cells (CliffWalking) | benchmark plot, the 2 reward lines, greedy paths | `screenshots/9.4_evsarsa_vs_qlearning.png` |
 | 9.5 | your terminal | pip install + `python screenshot_demo_gym_check.py` output | `screenshots/9.5_local_gym_check.png` |
 | 9.6 | Jupyter on your laptop | notebook at `localhost:8888`, Taxi cell finished | `screenshots/9.6_local_jupyter_run.png` |

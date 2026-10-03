@@ -176,8 +176,9 @@ SPEC = {
                  "“Both frameworks work - ready for Lab 7!”.",
          "file": "Lab 7/screenshots/7.3_install_check.png"},
         {"id": "7.4", "title": "neural_net.ipynb – model + training",
-         "what": "the “Create our Neural Network” cell (with the fixed `InputLayer(shape=(28*28,))` "
-                 "line and the seed line) and the `model.compile`/`model.fit` cell with all 5 epochs.",
+         "what": "the “Create our Neural Network” cell, all 13 lines (**line 2** = my seed, **lines 6–7** = "
+                 "the original `InputLayer` line commented out + my fix `InputLayer(shape=(28*28,))`) and the "
+                 "`model.compile`/`model.fit` cell with all 5 epochs.",
          "file": "Lab 7/screenshots/7.4_nn_model_training.png"},
         {"id": "7.5", "title": "neural_net.ipynb – test accuracy + prediction",
          "what": "the evaluate cells (Test accuracy ≈ 0.938) and the prediction section: the "

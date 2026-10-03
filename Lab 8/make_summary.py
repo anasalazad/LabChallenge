@@ -94,11 +94,37 @@ def fmt_answers(data, res):
     return [(q, a.format(**vals)) for q, a in ANSWERS]
 
 
+TBLPR_ORDER = ["tblStyle", "tblpPr", "tblOverlap", "bidiVisual", "tblStyleRowBandSize",
+               "tblStyleColBandSize", "tblW", "jc", "tblCellSpacing", "tblInd", "tblBorders",
+               "shd", "tblLayout", "tblCellMar", "tblLook", "tblCaption", "tblDescription"]
+TCPR_ORDER = ["cnfStyle", "tcW", "gridSpan", "hMerge", "vMerge", "tcBorders", "shd", "noWrap",
+              "tcMar", "textDirection", "tcFitText", "vAlign", "hideMark"]
+
+
+def insert_ordered(parent, child, order):
+    """Word wants child elements in schema order - insert in the right spot."""
+    name = child.tag.split("}")[1]
+    for old in parent.findall(child.tag):
+        parent.remove(old)
+    later = order[order.index(name) + 1:]
+    for i, sib in enumerate(parent):
+        if sib.tag.split("}")[1] in later:
+            parent.insert(i, child)
+            return child
+    parent.append(child)
+    return child
+
+
+def fixed_layout(table):
+    lay = OxmlElement("w:tblLayout"); lay.set(qn("w:type"), "fixed")
+    insert_ordered(table._tbl.tblPr, lay, TBLPR_ORDER)
+
+
 def shade(cell, fill):
     tcpr = cell._tc.get_or_add_tcPr()
     shd = OxmlElement("w:shd")
     shd.set(qn("w:val"), "clear"); shd.set(qn("w:color"), "auto"); shd.set(qn("w:fill"), fill)
-    tcpr.append(shd)
+    insert_ordered(tcpr, shd, TCPR_ORDER)
 
 
 def run(p, text, size=9, bold=False, italic=False, colour=None):
@@ -163,7 +189,7 @@ def build():
             else:
                 run(cp, "–", 8.5, colour=RGBColor(0x99, 0x99, 0x99))
     table.autofit = False
-    lay = OxmlElement("w:tblLayout"); lay.set(qn("w:type"), "fixed"); table._tbl.tblPr.append(lay)
+    fixed_layout(table)
     for gc, w in zip(table._tbl.tblGrid.findall(qn("w:gridCol")), [5.0] + [2.2] * len(TS)):
         gc.set(qn("w:w"), str(int(w / 2.54 * 1440)))
     for row in table.rows:
@@ -185,8 +211,7 @@ def build():
     pt = doc.add_table(rows=1, cols=2)
     pt.alignment = WD_TABLE_ALIGNMENT.CENTER
     pt.autofit = False
-    tblpr = pt._tbl.tblPr
-    layout = OxmlElement("w:tblLayout"); layout.set(qn("w:type"), "fixed"); tblpr.append(layout)
+    fixed_layout(pt)
     for c, (img, w, cw) in zip(pt.rows[0].cells, [("figures/8_1_gradient_plot.png", 2.68, 2.85),
                                                    ("figures/8_2_attention_plot.png", 3.72, 3.95)]):
         c.width = Inches(cw)

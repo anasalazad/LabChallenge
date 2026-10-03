@@ -146,7 +146,7 @@ SPEC = {
                 "Test error > training error, so always keep a test set.",
             ],
             "problems": [
-                "GD on the raw areas (~1000s) blew up to 1e205 / nan within 20 iterations. Fixed by "
+                "GD on the raw areas (~1000s) blew up to a cost of ~1e205 within just 20 iterations. Fixed by "
                 "standardising the feature (z-score) and converting the weights back afterwards.",
             ],
         },
