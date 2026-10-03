@@ -57,23 +57,19 @@ All five labs (5–9) have been worked through. Every lab folder now has:
 - [ ] **Lab 8 deliverable:** `Lab 8/Lab8_RNN_LSTM_Attention.ipynb` + `Lab 8/Lab8_Summary.pdf` (one page).
 - [ ] If your tutor wants PDFs: in Word *File → Save As → PDF* for each worklog.
 
+## Getting this onto your laptop
+Everything is on GitHub on the branch `claude/optimistic-cray-x20tfr`. In your clone:
+```bash
+git fetch origin
+git checkout claude/optimistic-cray-x20tfr
+```
+When you're happy with it, open a pull request from that branch into `main` on GitHub (or merge locally: `git checkout main && git merge claude/optimistic-cray-x20tfr && git push`).
+
 ## Using Claude Code on your laptop for the rest
 Open the repo folder in Claude Code and say e.g. *"Read CLAUDE.md and Lab 5/CLAUDE.md and finish what's left for Lab 5"*. It knows how to run the blocked bits, update the worklogs, insert screenshots and tick boxes. It can't log into Colab or take screenshots of your screen – that part's you.
 
 ## Things that didn't work in the cloud (so you know)
 - **California Housing download** (Lab 5) – the cloud network blocked `ndownloader.figshare.com`. Works in Colab / on your laptop; `Lab 5/CLAUDE.md` has the steps.
-- **Pushing to GitHub** – the Claude GitHub App didn't have access to this repo, so the work couldn't be pushed from the cloud. Two ways to get it onto GitHub:
-  1. **Fix the access:** reconnect GitHub at <https://claude.ai/connect-github> and install the Claude GitHub App on `anasalazad/LabChallenge` from that page, then ask Claude to push the branch `claude/optimistic-cray-x20tfr`.
-  2. **Push it yourself from the bundle** Claude sent you (`LabChallenge-labs5-9.bundle`, ~5 MB – it holds all the new commits). In your normal clone of the repo on your laptop:
-     ```bash
-     git checkout main && git pull                       # make sure you have the "all Labs to be done" commit
-     git fetch path/to/LabChallenge-labs5-9.bundle claude/optimistic-cray-x20tfr:claude/optimistic-cray-x20tfr
-     git checkout claude/optimistic-cray-x20tfr
-     git push -u origin claude/optimistic-cray-x20tfr    # uses your own GitHub login
-     ```
-     Then on GitHub open a pull request from that branch into `main` (or merge it locally: `git checkout main && git merge claude/optimistic-cray-x20tfr && git push`).
-     (There's also `LabChallenge_Labs5-9_files_only.zip` with just the files, no git, if you only want to look at/open things.)
-
 ## Two honest notes
 - Bugs found in the tutor's material (worth mentioning in class): Lab 7's notebook crashes on current TensorFlow (`InputLayer(input_shape=28*28)` → fixed with `shape=(28*28,)`); Lab 6's PCA notebook isn't reproducible (no random seed – added one); the template's page-2 footer said "COS40005_worklog" (fixed in the generated worklogs).
 - A lot of this was prepared with an AI assistant. Go through each lab's **"Know your stuff"** section so you can explain the work yourself, and check your unit's rules on AI use – if they ask for an acknowledgement, add one to your worklogs.
