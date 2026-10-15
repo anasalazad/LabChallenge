@@ -475,7 +475,7 @@ def build_worklog(spec, out_path):
         p = cell.add_paragraph()
         _set_spacing(p, before=0, after=4)
         _add_rich_text(p, f"Save as `{ss['file']}` then run "
-                          "`python _tools/insert_screenshots.py` "
+                          "`python3 _tools/insert_screenshots.py` "
                           "(or just paste the image here and delete this box).",
                        size=8, italic=True)
         for cp_ in cell.paragraphs:                 # keep box + caption together

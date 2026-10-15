@@ -185,9 +185,12 @@ def build_spec():
         "total_time": "4.5 h",
         "total_note": "+ ~30 min laptop runs & screenshots",
         "screenshots_intro": "Figures 10.1–10.4 come straight out of my notebook. The yellow boxes are screenshots I "
-                             "still need to take on my laptop. Set-up first: in the terminal, in the LabChallenge "
-                             "folder, run `source .venv/bin/activate` then `pip install pygad kivy` (Windows: "
-                             "`.venv\\Scripts\\activate`). Then `cd \"Lab 10\"` and do the steps below.",
+                             "still need to take on my laptop. **Set-up first (Mac – use `python3`, not `python`):** "
+                             "open a terminal in the LabChallenge folder (in VS Code: Terminal → New Terminal) and run "
+                             "`python3 -m venv .venv` (only if there's no .venv folder yet), then "
+                             "`source .venv/bin/activate` – the line must now start with **(.venv)** – then "
+                             "`python3 -m pip install pygad kivy matplotlib python-docx pillow`, then `cd \"Lab 10\"`. "
+                             "Every new terminal: run `source .venv/bin/activate` again first.",
         "figures": [
             {"path": "Lab 10/figures/10_1_linear_fitness.png", "width": 5.0,
              "caption": "linear model – best fitness each generation (sheet settings, log scale)"},
@@ -200,17 +203,17 @@ def build_spec():
         ],
         "screenshots": [
             {"id": "10.1", "title": "Terminal – PyGAD and Kivy installed",
-             "what": "the end of `pip install pygad kivy` ('Successfully installed …' or 'Requirement already "
-                     "satisfied'), then run `python -c \"import pygad; print(pygad.__version__)\"` and include the "
+             "what": "the end of `python3 -m pip install pygad kivy matplotlib python-docx pillow` ('Successfully installed …' or 'Requirement already "
+                     "satisfied'), then run `python3 -c \"import pygad; print(pygad.__version__)\"` (with a space after python3) and include the "
                      "version line.",
              "file": "Lab 10/screenshots/10.1_install.png"},
             {"id": "10.2", "title": "Linear model – output + fitness plot",
-             "what": "run `python fitting_linear_model.py`. A plot window opens – take one shot of the plot, close it, "
+             "what": "run `python3 fitting_linear_model.py`. A plot window opens – take one shot of the plot, close it, "
                      "then a second shot of the terminal lines 'Parameters of the best solution … Predicted output … "
                      "Best fitness value reached after … generations'. Name them `10.2a_…` and `10.2b_…`.",
              "file": "Lab 10/screenshots/10.2_linear_model.png"},
             {"id": "10.3", "title": "8 Queens app – random starting board",
-             "what": "run `python 8_queen_puzzle.py`, click **Initial Population**, then **Show Best Solution** – "
+             "what": "run `python3 8_queen_puzzle.py`, click **Initial Population**, then **Show Best Solution** – "
                      "screenshot the whole window (board with green 'Queen' squares and the 'Attacks = …' label).",
              "file": "Lab 10/screenshots/10.3_queens_start.png"},
             {"id": "10.4", "title": "8 Queens app – solved",
@@ -232,9 +235,9 @@ def build_spec():
                      "`(my fix)`, e.g. `pygadThread.start()` and `stop_criteria=\"reach_1.1\"`.",
              "file": "Lab 10/screenshots/10.7_my_fixes.png"},
         ],
-        "notes": ["**Then:** save the screenshots in `Lab 10/screenshots/` with those names, and from the LabChallenge "
-                  "folder run `python _tools/insert_screenshots.py 10`, `python _tools/tick_checklist.py 10 7 8 9 10` "
-                  "and `python _tools/make_handin.py 10`."],
+        "notes": ["**Then:** save the screenshots in `Lab 10/screenshots/` with those names, close Word, go back to the "
+                  "LabChallenge folder (`cd ..`) with (.venv) on, and run `python3 _tools/insert_screenshots.py 10`, "
+                  "`python3 _tools/tick_checklist.py 10 7 8 9 10` and `python3 _tools/make_handin.py 10`."],
         "sections": [
             {
                 "heading": "What I fixed in the tutor's programs (PyGAD 3)",
