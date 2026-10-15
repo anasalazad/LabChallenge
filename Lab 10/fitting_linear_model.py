@@ -4,7 +4,7 @@ import numpy
 function_inputs = [4, -2, 3.5, 5, -11, -4.7]  # Function inputs.
 desired_output = 44  # Function output.
 
-def fitness_func(solution, solution_idx):
+def fitness_func(ga_instance, solution, solution_idx):  # (my fix) PyGAD 3.x passes ga_instance first
     output = numpy.sum(solution*function_inputs)
     fitness = 1.0 / numpy.abs(output - desired_output)
     return fitness
@@ -42,7 +42,7 @@ ga_instance = pygad.GA(num_generations=num_generations,
                        mutation_percent_genes=mutation_percent_genes)
 
 ga_instance.run()
-ga_instance.plot_result()
+ga_instance.plot_fitness()  # (my fix) plot_result() was renamed plot_fitness() in PyGAD 3
 
 solution, solution_fitness, solution_idx = ga_instance.best_solution()
 

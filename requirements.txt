@@ -44,3 +44,7 @@ tqdm
 # _tools/ (worklog builder, screenshot inserter, checklist ticker)
 python-docx
 pillow
+
+# Lab 10: genetic algorithms (PyGAD) + the 8 Queen GUI (Kivy)
+pygad
+kivy

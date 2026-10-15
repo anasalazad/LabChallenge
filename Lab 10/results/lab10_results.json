@@ -1,0 +1,126 @@
+{
+  "pygad": "3.8.1",
+  "linear_main": {
+    "seed": 10,
+    "weights": [
+      3.6366,
+      1.6515,
+      4.4736,
+      0.0108,
+      -1.3668,
+      -0.4264
+    ],
+    "fitness": 149.08,
+    "prediction": 43.9933,
+    "error": 0.0067,
+    "best_generation": 4,
+    "start_error": 1.78,
+    "stuck_generations": 46
+  },
+  "not_unique": true,
+  "linear_tuning": [
+    {
+      "setting": "sheet (50 gen, 8 per pop)",
+      "median error": 0.0073,
+      "worst error": 0.0331,
+      "within 0.01": "14/20",
+      "seconds (20 runs)": 0.7
+    },
+    {
+      "setting": "200 generations",
+      "median error": 0.0013,
+      "worst error": 0.0133,
+      "within 0.01": "19/20",
+      "seconds (20 runs)": 1.7
+    },
+    {
+      "setting": "50 per population",
+      "median error": 0.0016,
+      "worst error": 0.0079,
+      "within 0.01": "20/20",
+      "seconds (20 runs)": 2.4
+    },
+    {
+      "setting": "both (200 gen, 50 per pop)",
+      "median error": 0.0003,
+      "worst error": 0.0012,
+      "within 0.01": "20/20",
+      "seconds (20 runs)": 9.4
+    },
+    {
+      "setting": "tournament selection",
+      "median error": 0.0094,
+      "worst error": 0.0482,
+      "within 0.01": "10/20",
+      "seconds (20 runs)": 0.5
+    },
+    {
+      "setting": "roulette wheel selection",
+      "median error": 0.0112,
+      "worst error": 0.0601,
+      "within 0.01": "8/20",
+      "seconds (20 runs)": 0.4
+    },
+    {
+      "setting": "uniform crossover",
+      "median error": 0.0145,
+      "worst error": 0.0348,
+      "within 0.01": "8/20",
+      "seconds (20 runs)": 0.4
+    },
+    {
+      "setting": "mutate 50% of genes",
+      "median error": 0.0294,
+      "worst error": 0.0994,
+      "within 0.01": "6/20",
+      "seconds (20 runs)": 0.8
+    }
+  ],
+  "queens": [
+    {
+      "version": "app settings, original attack count",
+      "solved": "14/30",
+      "solved %": 47,
+      "median generations when solved": 60,
+      "avg seconds per run": 1.32
+    },
+    {
+      "version": "app settings, fixed attack count",
+      "solved": "20/30",
+      "solved %": 67,
+      "median generations when solved": 55,
+      "avg seconds per run": 1.19
+    },
+    {
+      "version": "integer genes (my change)",
+      "solved": "13/30",
+      "solved %": 43,
+      "median generations when solved": 71,
+      "avg seconds per run": 1.27
+    },
+    {
+      "version": "permutation (my change)",
+      "solved": "30/30",
+      "solved %": 100,
+      "median generations when solved": 1,
+      "avg seconds per run": 0.1
+    }
+  ],
+  "queens_lucky_start": {
+    "permutation": 8,
+    "app": 0
+  },
+  "queens_example": {
+    "board": [
+      4,
+      0,
+      7,
+      3,
+      1,
+      6,
+      2,
+      5
+    ],
+    "generations": 72
+  }
+}

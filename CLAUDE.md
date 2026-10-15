@@ -9,7 +9,7 @@ This repo is Anas Al Azad's COS30018 *Intelligent Systems* (Swinburne) lab chall
 Lab Worklog Template.docx      tutor's template (don't edit – the builder clones it)
 requirements.txt               everything needed to run all labs locally
 Anas.md                        overall guide for Anas (human)
-Lab N/                         one folder per lab (N = 1..9, Lab N = "Week N tutorial")
+Lab N/                         one folder per lab (N = 1..10, Lab N = "Week N tutorial")
   LabN_Worklog_WeekN.docx      the filled-in worklog for that week
   Anas.md / CLAUDE.md          what's left, for the human / for you
   screenshots/                 Anas saves screenshots here (README lists the names)
@@ -58,6 +58,7 @@ Execute a notebook headless: `jupyter nbconvert --to notebook --execute --inplac
 | 7 | TensorFlow/PyTorch, MNIST MLP | help with local TF + PyTorch install | installs + screenshots |
 | 8 | RNN/LSTM/GRU/attention + **deliverable** | re-run only if Anas wants their own numbers, then `python make_summary.py` | add student ID to summary, screenshots, hand in notebook + `Lab8_Summary.pdf` |
 | 9 | Gymnasium Q-learning | help with Task 2 (local install) | Task 2 on own laptop + screenshots |
+| 10 | Genetic algorithms (PyGAD): linear model + 8 Queens (Kivy) | done in the cloud – `Lab10_Genetic_Algorithms.ipynb` run with PyGAD 3.8.1 (seeded), tutor's 2 programs fixed for PyGAD 3 (`(my fix)`), `week10.py` static spec; screenshot instructions are only in the worklog | `pip install pygad kivy`, run both programs, screenshots |
 
 ## Gotchas
 - Lab 4: `pyautogen==0.2.28` needs Python ≤ 3.12 and pins old gradio/fastapi → separate venv (`.venv-autogen`). AutoGen caches replies in `.cache/41` (git-ignored). Gemini is used through its OpenAI-compatible `base_url` in `CONFIG_LIST.json`; the key comes from `.env`.

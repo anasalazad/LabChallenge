@@ -9,6 +9,9 @@ import numpy
 import pygad
 
 import threading
+import time
+
+from kivy.clock import Clock  # (my fix) for updating the board safely from the GA thread
 
 class PygadThread(threading.Thread):
     
@@ -31,7 +34,7 @@ class BuzzleApp(kivy.app.App):
             self.num_attacks_Label.text = "Press \"Initial Population\""
             return
         pygadThread = PygadThread(self, self.ga_instance)
-        pygadThread.run()
+        pygadThread.start()  # (my fix) was .run(), which ran the GA on the GUI thread and froze the window
 
     def initialize_population(self, *args):
         self.num_solutions = 100
@@ -57,7 +60,8 @@ class BuzzleApp(kivy.app.App):
                                     random_mutation_min_val=0.0,
                                     random_mutation_max_val=8.0,
                                     on_generation=on_gen_callback,
-                                    delay_after_gen=0.2)
+                                    stop_criteria="reach_1.1")  # (my fix) delay_after_gen was removed in PyGAD 3 (crashed here);
+                                                                 # stop as soon as a 0-attack board (fitness 1.1) is found
 
     def vector_to_matrix(self):
         # Converts the 1D vector solutions into a 2D matrix solutions represrnting the board, where 1 means a queen exists. The matrix form of the solutions makes calculating the fitness value much easier.
@@ -199,6 +203,8 @@ def attacks_diagonal(ga_solution):
     total = 0 # total number of attacking pairs diagonally for each solution.
 
     for element_idx in range(8):
+        total = 0  # (my fix) reset for every queen - before, the running total was added again for each queen,
+                   # so the number of attacks was hugely over-counted (e.g. 126 instead of 28 on one diagonal)
         x = row_indices[element_idx]
         y = col_indices[element_idx]
         # print("ROW index of the current queen : ", x)
@@ -256,7 +262,8 @@ def on_gen_callback(ga_instance):
     buzzleApp.population_1D_vector = ga_instance.population
     buzzleApp.vector_to_matrix()
 
-    buzzleApp.update_board_UI()
+    Clock.schedule_once(buzzleApp.update_board_UI)  # (my fix) only the GUI thread may redraw the board
+    time.sleep(0.2)  # (my fix) replaces delay_after_gen so you can watch it
     # buzzleApp.gridLayout.export_to_png("gen_"+str(ga_instance.generations_completed)+".png")
 
 from kivy.config import Config

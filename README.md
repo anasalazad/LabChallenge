@@ -1,4 +1,4 @@
-# COS30018 Intelligent Systems – Labs 1–9
+# COS30018 Intelligent Systems – Labs 1–10
 
 Lab challenge: complete the labs and document each week in the Lab Work Log template.
 
@@ -13,6 +13,7 @@ Lab challenge: complete the labs and document each week in the Lab Work Log temp
 | [Lab 7](Lab%207) | TensorFlow & PyTorch, neural networks, MNIST | `Lab7_Worklog_Week7.docx` | `neural_net.ipynb` (fixed for Keras 3), `nn_experiments.ipynb`, `nn_pytorch.ipynb` |
 | [Lab 8](Lab%208) | RNN, LSTM/GRU, attention (+ one-page summary deliverable) | `Lab8_Worklog_Week8.docx` | `Lab8_RNN_LSTM_Attention.ipynb`, `Lab8_Summary.pdf` |
 | [Lab 9](Lab%209) | Reinforcement learning with Gymnasium (Q-learning) | `Lab9_Worklog_Week9.docx` | `Lab_Week 9.ipynb` (completed) |
+| [Lab 10](Lab%2010) | Genetic algorithms with PyGAD (linear model, 8 Queen puzzle) | `Lab10_Worklog_Week10.docx` | `Lab10_Genetic_Algorithms.ipynb`, fixed `fitting_linear_model.py` + `8_queen_puzzle.py` |
 
 - **Beginner, step by step:** Labs 1–4 → [`START_HERE_Labs1-4_click_by_click.pdf`](START_HERE_Labs1-4_click_by_click.pdf), Labs 5–9 → [`START_HERE_click_by_click_guide.pdf`](START_HERE_click_by_click_guide.pdf)
 - **Keys (Labs 1–4):** copy `.env.example` to `.env` and fill it in – `.env` is git-ignored
